@@ -18,9 +18,9 @@ public class DataSource implements Closeable {
 
     public DataSource() {
         url = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".url");
-        user = ConfiguraionManager.INSTANCE.getProperty("db." + DB + "user");
-        password = ConfiguraionManager.INSTANCE.getProperty("db." + DB + "password");
-        driver = ConfiguraionManager.INSTANCE.getProperty("db." + DB + "driver");
+        user = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".user");
+        password = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".password");
+        driver = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".driver");
     }
 
 
