@@ -25,13 +25,6 @@
                         <td><a href="controller?command=course&id=${course.id}">${course.name}</a></td>
                         <td>${course.cost}</td>
                         <td>${course.durationDays}</td>
-                        <td>
-                            <form method="post" action="controller">
-                                <input type="hidden" name="command" value="add_to_cart"/>
-                                <input type="hidden" name="courseId" value="${course.id}"/>
-                                <input type="submit" value="Add to cart"/>
-                            </form>
-                        </td>
                     </tr>
                 </c:forEach>
             </table>
