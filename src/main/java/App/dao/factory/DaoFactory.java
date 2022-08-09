@@ -27,6 +27,10 @@ public enum DaoFactory {
 
     @SuppressWarnings("unchecked")
     public <T> T getDao(Class<T> clazz) {
-        return (T) map.get(clazz);
+        T dao = (T) map.get(clazz);
+        if (dao == null) {
+            throw new RuntimeException("Class " + clazz + " is not constructed.");
+        }
+        return dao;
     }
 }
