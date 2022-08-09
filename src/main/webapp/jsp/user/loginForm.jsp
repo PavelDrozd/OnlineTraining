@@ -12,6 +12,7 @@
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="container text-left my-4">
             <h1> Login </h1>
+            <p><c:out value="${requestScope.message}"/></p>
             <form method="post" action="controller">
                 <p>
                 <input name="command" type="hidden" value="login"/>

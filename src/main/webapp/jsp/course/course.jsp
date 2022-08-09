@@ -11,12 +11,13 @@
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="container text-center my-2">
+            <p><c:out value="${requestScope.message}"/></p>
             <table class="table table-bordered border-primary my-2">
                 <tr><th>Field</th><th>Value</th></tr>
-                <tr><td>ID</td><td>${course.id}</td><tr>
-                <tr><td>Course</td><td>${course.name}</td><tr>
-                <tr><td>Cost</td><td>${course.cost}</td><tr>
-                <tr><td>Duration (days)</td><td>${course.durationDays}</td><tr>
+                <tr><td>ID</td><td><c:out value="${course.id}"/></td><tr>
+                <tr><td>Course</td><td><c:out value="${course.name}"/></td><tr>
+                <tr><td>Cost</td><td><c:out value="${course.cost}"/></td><tr>
+                <tr><td>Duration (days)</td><td><c:out value="${course.durationDays}"/></td><tr>
             </table>
         </div>
     </body>

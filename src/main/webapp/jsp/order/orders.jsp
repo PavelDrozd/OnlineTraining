@@ -11,6 +11,7 @@
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="container text-center my-2">
+            <p><c:out value="${requestScope.message}"/></p>
             <table class="table table-bordered border-primary my-2">
                 <tr>
                     <th>#</th>
@@ -21,11 +22,11 @@
                 </tr>
                 <c:forEach items="${orders}" var="order" varStatus="counter">
                     <tr>
-                        <td><a href="controller?command=order&id=${order.id}">${counter.count}</a></td>
-                        <td>${order.user.firstName}</td>
-                        <td>${order.user.lastName}</td>
-                        <td>${order.status.toString().toLowerCase()}</td>
-                        <td>${order.totalCost}</td>
+                        <td><a href="controller?command=order&id=${order.id}"><c:out value="${counter.count}"/></a></td>
+                        <td><c:out value="${order.user.firstName}"/></td>
+                        <td><c:out value="${order.user.lastName}"/></td>
+                        <td><c:out value="${order.status.toString().toLowerCase()}"/></td>
+                        <td><c:out value="${order.totalCost}"/></td>
                     </tr>
                 </c:forEach>
             </table>

@@ -11,6 +11,6 @@
     <body>
         <jsp:include page="navbar/navbar.jsp"/>
 
-        <h1> Not found anything </h1>
+        <h1> Something wrong... </h1>
     </body>
 </html>

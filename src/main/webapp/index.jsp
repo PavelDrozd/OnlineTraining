@@ -12,7 +12,7 @@
         <jsp:include page="jsp/navbar/navbar.jsp"/>
         <div class="container text-center my-2">
 
-            <p>${requestScope.message}</p>
+            <p><c:out value="${requestScope.message}"/></p>
 
         </div>
     </body>

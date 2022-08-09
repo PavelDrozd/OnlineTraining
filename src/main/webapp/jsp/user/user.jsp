@@ -11,15 +11,15 @@
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="container text-center my-2">
-            <p>${requestScope.message}</p>
+            <p><c:out value="${requestScope.message}"/></p>
 
             <table class="table table-bordered border-primary my-2">
                 <tr><th>Field</th><th>Value</th></tr>
-                <tr><td>ID</td><td>${user.id}</td><tr>
-                <tr><td>First name</td><td>${user.firstName}</td><tr>
-                <tr><td>Last name</td><td>${user.lastName}</td><tr>
-                <tr><td>Age</td><td>${user.age}</td><tr>
-                <tr><td>Email</td><td>${user.email}</td><tr>
+                <tr><td>ID</td><td><c:out value="${user.id}"/></td><tr>
+                <tr><td>First name</td><td><c:out value="${user.firstName}"/></td><tr>
+                <tr><td>Last name</td><td><c:out value="${user.lastName}"/></td><tr>
+                <tr><td>Age</td><td><c:out value="${user.age}"/></td><tr>
+                <tr><td>Email</td><td><c:out value="${user.email}"/></td><tr>
             </table>
         </div>
     </body>
