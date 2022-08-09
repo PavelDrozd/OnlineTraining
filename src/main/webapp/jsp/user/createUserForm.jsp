@@ -15,7 +15,7 @@
             <p><c:out value="${requestScope.message}"/></p>
                 <form method="post" action="controller">
                     <p>
-                    <input name="command" type="hidden" value="create_user_form"/>
+                    <input name="command" type="hidden" value="create_user"/>
                     <label for="firstName-input">First name: </label>
                     <input id="firstName-input" name="firstName" type="text"/>
                     </p>
