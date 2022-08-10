@@ -50,7 +50,7 @@ create TABLE IF NOT EXISTS  users (
     lastName varchar (15) NOT NULL,
     "age" SMALLINT,
     email varchar (30) NOT NULL,
-    password varchar (30) NOT NULL,
+    password varchar (50) NOT NULL,
     role_id bigint NOT NULL REFERENCES roles,
     deleted boolean NOT NULL DEFAULT FALSE
 
