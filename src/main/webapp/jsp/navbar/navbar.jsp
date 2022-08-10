@@ -9,7 +9,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="controller?command=courses">Courses</a>
+                </li>
+
+
+                <c:if test="${sessionScope.user.roleDto.toString() == 'ADMIN'}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="controller?command=users">Users</a>
+                    </li>
+                </c:if>
+
                 <c:if test="${sessionScope.user != null}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="controller?command=orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="controller?command=profile">Profile</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="controller?command=logout">Logout</a>
                     </li>
@@ -22,18 +40,6 @@
                         <a class="nav-link" href="controller?command=create_user_form">Register</a>
                     </li>
                 </c:if>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="controller?command=courses">Courses</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="controller?command=orders">Orders</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="controller?command=users">Users</a>
-                </li>
 
         </div>
     </div>
