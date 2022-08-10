@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
     public static final String UPDATE_USER = //
             "UPDATE users SET firstName = ?, lastName = ?, age = ?, email = ?, password = ?, role_id = "//
                     + SELECT_FROM_ROLES//
-                    + "WHERE id = ? AND u.deleted = false";
+                    + "WHERE id = ? AND deleted = false";
     public static final String DELETE_USER = "UPDATE users u SET deleted = true "//
             + "WHERE u.id = ?";
     public static final String COUNT_USERS = "SELECT count(*) AS total " + FROM_USERS//
@@ -148,6 +148,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Long count() {
         try (Connection connection = dataSource.getConnection()) {
+            log.debug("Database query to the 'COUNT' all.");
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(COUNT_USERS);
             if (result.next()) {
