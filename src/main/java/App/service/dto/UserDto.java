@@ -1,7 +1,9 @@
 package App.service.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
+@ToString(exclude = "password")
 @Data
 public class UserDto {
     private Long id;
