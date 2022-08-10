@@ -4,6 +4,7 @@ import App.dao.UserDao;
 import App.dao.entity.User;
 import App.service.UserService;
 import App.service.dto.UserDto;
+import App.service.util.DigestUtil;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -20,10 +21,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         log.debug("Service 'create' new userDto: {}.", userDto);
-        User existing = userDao.getByEmail(userDto.getEmail());
-        if (existing != null) {
-            throw new RuntimeException("Book with Email " + userDto.getEmail() + "already exists.");
-        }
+        checkExists(userDto);
+        String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
+        userDto.setPassword(hashedPassword);
         User user = userDao.create(toUserEntity(userDto));
         return toUserDto(user);
     }
@@ -91,10 +91,10 @@ public class UserServiceImpl implements UserService {
         if (userDto == null) {
             throw new RuntimeException("Incorrect email or password");
         }
-        if (!userDto.getPassword().equals(password)) {
+        String hashedPassword = DigestUtil.INSTANCE.hash(password);
+        if (!userDto.getPassword().equals(hashedPassword)) {
             throw new RuntimeException("Incorrect email or password");
         }
-
         return userDto;
     }
 
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
         if (userDto.getRoleDto() == null){
             userDto.setRoleDto(UserDto.RoleDto.USER);
         }
-        user.setRole(User.Role.values()[userDto.getRoleDto().ordinal()]);
+        user.setRole(User.Role.valueOf(userDto.getRoleDto().toString()));
         return user;
     }
 
@@ -123,7 +123,15 @@ public class UserServiceImpl implements UserService {
         userDto.setAge(user.getAge());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
-        userDto.setRoleDto(UserDto.RoleDto.values()[user.getRole().ordinal()]);
+        userDto.setRoleDto(UserDto.RoleDto.valueOf(user.getRole().toString()));
         return userDto;
     }
+
+    private void checkExists(UserDto userDto) {
+        User existing = userDao.getByEmail(userDto.getEmail());
+        if (existing != null) {
+            throw new RuntimeException("Book with Email " + userDto.getEmail() + "already exists.");
+        }
+    }
+
 }
