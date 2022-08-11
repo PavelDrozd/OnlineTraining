@@ -39,7 +39,7 @@ public class AuthorizationFilter extends HttpFilter {
                     "login_form",
                     "login",
                     "courses",
-                    "course"
+                    "course" //
                     -> false;
             default -> true;
         };

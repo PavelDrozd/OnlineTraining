@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface AbstractDao<K, T> {
 
-    T create (T t);
+    T create(T t);
 
     List<T> getAll(int limit, long offset);
 
@@ -14,5 +14,5 @@ public interface AbstractDao<K, T> {
 
     boolean delete(K id);
 
-    K count ();
+    K count();
 }

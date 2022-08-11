@@ -14,7 +14,7 @@ public class OrderDto {
     private BigDecimal totalCost;
     private List<OrderInfo> details;
 
-    public enum StatusDto{
+    public enum StatusDto {
         UNPAID, CANCELLED, PAYED,
     }
 }

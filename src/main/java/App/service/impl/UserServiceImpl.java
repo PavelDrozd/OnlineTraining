@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
         user.setAge(userDto.getAge());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        if (userDto.getRoleDto() == null){
+        if (userDto.getRoleDto() == null) {
             userDto.setRoleDto(UserDto.RoleDto.USER);
         }
         user.setRole(User.Role.valueOf(userDto.getRoleDto().toString()));

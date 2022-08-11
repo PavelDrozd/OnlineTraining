@@ -3,7 +3,7 @@ package App.dao.entity;
 import lombok.Data;
 import lombok.ToString;
 
-@ToString (exclude = "password")
+@ToString(exclude = "password")
 @Data
 public class User {
     private Long id;
@@ -14,7 +14,7 @@ public class User {
     private String password;
     private Role role;
 
-    public enum Role{
+    public enum Role {
         USER, STUDENT, TEACHER, ADMIN
     }
 

@@ -13,7 +13,7 @@ public class Order {
     private BigDecimal totalCost;
     private List<OrderInfo> details;
 
-    public enum Status{
+    public enum Status {
         UNPAID, CANCELLED, PAYED,
     }
 }

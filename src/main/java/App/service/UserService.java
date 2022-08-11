@@ -4,7 +4,7 @@ import App.service.dto.UserDto;
 
 import java.util.List;
 
-public interface UserService extends AbstractService<Long, UserDto>{
+public interface UserService extends AbstractService<Long, UserDto> {
 
     List<UserDto> getByFirstName(String firstName);
 

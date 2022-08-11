@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void delete(Long id) {
         log.debug("Service 'delete' by id: {}.", id);
-        if (orderDao.delete(id)){
+        if (orderDao.delete(id)) {
             throw new RuntimeException("Can't delete order by id: " + id);
         }
     }
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Order toOrderEntity(OrderDto orderDto) {
         Order order = new Order();
-        if(order.getId() != null ){
+        if (order.getId() != null) {
             order.setId(orderDto.getId());
         }
         order.setUser(orderDao.getById(orderDto.getUser().getId()).getUser());

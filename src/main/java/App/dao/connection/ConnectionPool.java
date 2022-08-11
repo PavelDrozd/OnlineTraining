@@ -22,7 +22,7 @@ public class ConnectionPool {
         try {
             Class.forName(driver);
             log.info("Database driver loaded");
-            for (int i = 0; i < DEFAULT_POOL_SIZE; i++){
+            for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 freeConnections.offer(new ProxyConnection(connection));
                 log.info("Connection created.");

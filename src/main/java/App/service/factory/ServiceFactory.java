@@ -25,6 +25,7 @@ public enum ServiceFactory {
         map.put(OrderService.class, new OrderServiceImpl(
                 DaoFactory.INSTANCE.getDao(OrderDao.class), DaoFactory.INSTANCE.getDao(CourseDao.class)));
     }
+
     @SuppressWarnings("unchecked")
     public <T> T getService(Class<T> clazz) {
         return (T) map.get(clazz);

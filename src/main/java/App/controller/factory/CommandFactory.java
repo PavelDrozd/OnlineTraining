@@ -5,12 +5,12 @@ import App.controller.Command;
 public enum CommandFactory {
     INSTANCE;
 
-    CommandFactory(){
+    CommandFactory() {
     }
 
-    public Command getCommand(String command){
+    public Command getCommand(String command) {
         Command commandInstance = CommandRegister.valueOf(command.toUpperCase()).getCommand();
-        if (commandInstance == null){
+        if (commandInstance == null) {
             commandInstance = CommandRegister.valueOf("ERROR").getCommand();
         }
         return commandInstance;

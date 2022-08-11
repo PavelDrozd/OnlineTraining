@@ -14,7 +14,7 @@ public class UserDto {
     private String password;
     private RoleDto roleDto;
 
-    public enum RoleDto{
+    public enum RoleDto {
         USER, STUDENT, TEACHER, ADMIN
     }
 }
