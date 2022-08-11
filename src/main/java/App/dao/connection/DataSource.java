@@ -16,7 +16,7 @@ public class DataSource implements Closeable {
     private final String driver;
     private static final String DB = "local"; // Set "local" to localhost db, "remote" to elephantSQL db
 
-    public DataSource() {
+    private DataSource() {
         url = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".url");
         user = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".user");
         password = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".password");
