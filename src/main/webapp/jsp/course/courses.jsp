@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setBundle basename="messages"/>
+<c:if test="${sessionScope.language != null}">
+<fmt:setLocale value="${sessionScope.language}"/>
+</c:if>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,11 +19,11 @@
             <p><c:out value="${requestScope.message}"/></p>
             <table class="table table-bordered border-primary my-2">
                 <tr>
-                    <th>#</th>
-                    <th>Course</th>
-                    <th>Cost</th>
-                    <th>Duration (days)</th>
-                    <th>Action</th>
+                    <th><fmt:message key="msg.hashtag"/></th>
+                    <th><fmt:message key="msg.course.course"/></th>
+                    <th><fmt:message key="msg.course.cost"/></th>
+                    <th><fmt:message key="msg.course.duration.days"/></th>
+                    <th><fmt:message key="msg.course.action"/></th>
                 </tr>
                 <c:forEach items="${courses}" var="course" varStatus="counter">
                     <tr>
