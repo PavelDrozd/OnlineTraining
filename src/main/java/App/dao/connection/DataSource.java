@@ -14,13 +14,14 @@ public class DataSource implements Closeable {
     private final String password;
     private final String user;
     private final String driver;
-    private static final String DB = "local"; // Set "local" to localhost db, "remote" to elephantSQL db
+    private final String profile;
 
     private DataSource() {
-        url = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".url");
-        user = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".user");
-        password = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".password");
-        driver = ConfiguraionManager.INSTANCE.getProperty("db." + DB + ".driver");
+        profile = ConfiguraionManager.INSTANCE.getProperty("profile");
+        url = ConfiguraionManager.INSTANCE.getProperty("db." + profile + ".url");
+        user = ConfiguraionManager.INSTANCE.getProperty("db." + profile + ".user");
+        password = ConfiguraionManager.INSTANCE.getProperty("db." + profile + ".password");
+        driver = ConfiguraionManager.INSTANCE.getProperty("db." + profile + ".driver");
     }
 
 

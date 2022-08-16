@@ -1,5 +1,6 @@
 package App.dao.connection;
 
+import App.ConfiguraionManager;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -12,17 +13,17 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 @Log4j2
 public class ConnectionPool {
-    private final static int DEFAULT_POOL_SIZE = 32;
+    private final static int POOL_SIZE = Integer.parseInt(ConfiguraionManager.INSTANCE.getProperty("pool.size"));
     private final BlockingDeque<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenAwayConnection;
 
     ConnectionPool(String driver, String url, String user, String password) {
-        freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
+        freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
         givenAwayConnection = new ArrayDeque<>();
         try {
             Class.forName(driver);
             log.info("Database driver loaded");
-            for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+            for (int i = 0; i < POOL_SIZE; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 freeConnections.offer(new ProxyConnection(connection));
                 log.info("Connection created.");
@@ -53,7 +54,7 @@ public class ConnectionPool {
     }
 
     public void destroy() {
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+        for (int i = 0; i < POOL_SIZE; i++) {
             try {
                 freeConnections.take().reallyClose();
                 log.info("Connection destroyed.");
