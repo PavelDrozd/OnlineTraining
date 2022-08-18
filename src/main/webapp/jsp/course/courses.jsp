@@ -28,9 +28,10 @@
                 <c:forEach items="${courses}" var="course" varStatus="counter">
                     <tr>
                         <td><c:out value="${counter.count}"/></td>
-                        <td><a href="controller?command=course&id=${course.id}"><c:out value="${course.name}"/></a></td>
-                        <td><c:out value="${course.cost}"/></td>
+                        <td><c:out value="${course.name}"/></td>
+                        <td><c:out value="${course.cost}"/>$</td>
                         <td><c:out value="${course.durationDays}"/></td>
+                        <td><a href="controller?command=course&id=${course.id}"><fmt:message key="msg.detail"/></a></td>
                     </tr>
                 </c:forEach>
             </table>
