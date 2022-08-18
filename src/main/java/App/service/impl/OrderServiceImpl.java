@@ -103,21 +103,32 @@ public class OrderServiceImpl implements OrderService {
 
     private Order toOrderEntity(OrderDto orderDto) {
         Order order = new Order();
-        if (order.getId() != null) {
-            order.setId(orderDto.getId());
-        }
+        setOrderId(orderDto, order);
         order.setUser(orderDao.getById(orderDto.getUser().getId()).getUser());
-        order.setStatus(Order.Status.values()[orderDto.getStatus().ordinal()]);
+        setOrderStatus(orderDto, order);
         order.setTotalCost(orderDto.getTotalCost());
         order.setDetails(orderDto.getDetails());
         return order;
+    }
+
+    private static void setOrderId(OrderDto orderDto, Order order) {
+        if (order.getId() != null) {
+            order.setId(orderDto.getId());
+        }
+    }
+
+    private static void setOrderStatus(OrderDto orderDto, Order order) {
+        if (orderDto.getStatus() == null) {
+            orderDto.setStatus(OrderDto.StatusDto.UNPAID);
+        }
+        order.setStatus(Order.Status.valueOf(orderDto.getStatus().toString()));
     }
 
     private OrderDto toOrderDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setUser(toUserDto(order.getUser()));
-        orderDto.setStatus(OrderDto.StatusDto.values()[order.getStatus().ordinal()]);
+        orderDto.setStatus(OrderDto.StatusDto.valueOf(order.getStatus().toString()));
         orderDto.setTotalCost(order.getTotalCost());
         orderDto.setDetails(order.getDetails());
         return orderDto;
@@ -131,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
         userDto.setAge(user.getAge());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
-        userDto.setRoleDto(UserDto.RoleDto.values()[user.getRole().ordinal()]);
+        userDto.setRoleDto(UserDto.RoleDto.valueOf(user.getRole().toString()));
         return userDto;
     }
 
