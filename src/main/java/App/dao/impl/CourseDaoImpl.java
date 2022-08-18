@@ -3,6 +3,7 @@ package App.dao.impl;
 import App.dao.CourseDao;
 import App.dao.connection.DataSource;
 import App.dao.entity.Course;
+import App.exceptions.DaoException;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -52,15 +53,16 @@ public class CourseDaoImpl implements CourseDao {
             statement.setBigDecimal(2, course.getCost());
             statement.setInt(3, course.getDurationDays());
             statement.executeUpdate();
-
             ResultSet key = statement.getGeneratedKeys();
+            Course created = new Course();
             if (key.next()) {
-                return getById(key.getLong("id"));
+                created = getById(key.getLong("id"));
             }
+            return created;
         } catch (SQLException e) {
             log.error("Error executing the 'create' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -78,8 +80,8 @@ public class CourseDaoImpl implements CourseDao {
             return courses;
         } catch (SQLException e) {
             log.error("Error executing the 'getAll' (limit) command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -89,14 +91,15 @@ public class CourseDaoImpl implements CourseDao {
             PreparedStatement statement = connection.prepareStatement(SELECT_COURSE_BY_ID);
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-
+            Course course = new Course();
             if (result.next()) {
-                return processCourse(result);
+                course = processCourse(result);
             }
+            return course;
         } catch (SQLException e) {
             log.error("Error executing the 'getById' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -113,8 +116,8 @@ public class CourseDaoImpl implements CourseDao {
             return getById(course.getId());
         } catch (SQLException e) {
             log.error("Error executing the 'update' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -127,8 +130,8 @@ public class CourseDaoImpl implements CourseDao {
             return rowDeleted == 1;
         } catch (SQLException e) {
             log.error("Error executing the 'delete' command throw: ", e);
+            throw new DaoException(e);
         }
-        return false;
     }
 
     @Override
@@ -141,8 +144,9 @@ public class CourseDaoImpl implements CourseDao {
             }
         } catch (SQLException e) {
             log.error("Error executing the 'count' command throw: ", e);
+            throw new DaoException(e);
         }
-        throw new RuntimeException("No elements in return statement 'count'.");
+        throw new DaoException("No elements in return statement 'count'.");
     }
 
     @Override
@@ -152,14 +156,15 @@ public class CourseDaoImpl implements CourseDao {
             PreparedStatement statement = connection.prepareStatement(SELECT_COURSE_BY_NAME);
             statement.setString(1, name);
             ResultSet result = statement.executeQuery();
-
+            Course course = new Course();
             if (result.next()) {
-                return processCourse(result);
+                course = processCourse(result);
             }
+            return course;
         } catch (SQLException e) {
             log.error("Error executing the 'getById' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     private Course processCourse(ResultSet result) throws SQLException {
