@@ -26,7 +26,7 @@ public class OrderDaoImpl implements OrderDao {
     public static final String JOIN_STATUS = //
             "JOIN order_status s ON o.status_id = s.id ";
     public static final String INSERT_ORDER = //
-            "INSERT INTO order (user_id, status_id, total_cost, order_date) " //
+            "INSERT INTO order (user_id, status_id, total_cost) " //
                     + "VALUES (?, ?, ?)";
     public static final String SELECT_ALL_ORDERS_PAGED = SELECT_ORDER + FROM_ORDER + JOIN_STATUS//
             + "WHERE o.deleted = false LIMIT ? OFFSET ?";
