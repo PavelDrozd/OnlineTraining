@@ -118,10 +118,11 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement statement = connection.prepareStatement(UPDATE_USER);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getRole().toString());
-            statement.setLong(6, user.getId());
+            statement.setInt(3, user.getAge());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPassword());
+            statement.setString(6, user.getRole().toString());
+            statement.setLong(7, user.getId());
 
             statement.executeUpdate();
             return getById(user.getId());
