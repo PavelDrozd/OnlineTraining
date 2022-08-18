@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         log.debug("Service 'create' new userDto: {}.", userDto);
-        checkExists(userDto);
+        checkCreateExistsByEmail(userDto);
         String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
         userDto.setPassword(hashedPassword);
         User user = userDao.create(toUserEntity(userDto));
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Service 'update' userDto: {}.", userDto);
         User existing = userDao.getByEmail(userDto.getEmail());
         if (existing != null && !existing.getId().equals(userDto.getId())) {
-            throw new RuntimeException("Book with Email " + userDto.getEmail() + "already exists.");
+            throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
         }
         User user = userDao.update(toUserEntity(userDto));
         return toUserDto(user);
@@ -100,20 +100,60 @@ public class UserServiceImpl implements UserService {
 
     private User toUserEntity(UserDto userDto) {
         User user = new User();
-        if (user.getId() != null) {
+        setUserId(userDto, user);
+        setUserFirstName(userDto, user);
+        setUserLastName(userDto, user);
+        setUserAge(userDto, user);
+        setUserEmail(userDto, user);
+        setUserPassword(userDto, user);
+        setUserRole(userDto, user);
+        return user;
+    }
+
+    private void setUserId(UserDto userDto, User user) {
+        if (userDto.getId() != null) {
             user.setId(userDto.getId());
         }
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setAge(userDto.getAge());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+    }
+
+    private void setUserFirstName(UserDto userDto, User user) {
+        if (userDto.getFirstName() != null) {
+            user.setFirstName(userDto.getFirstName());
+        }
+    }
+
+    private static void setUserLastName(UserDto userDto, User user) {
+        if (userDto.getLastName() != null) {
+            user.setLastName(userDto.getLastName());
+        }
+    }
+
+    private static void setUserAge(UserDto userDto, User user) {
+        if (userDto.getAge() != null) {
+            user.setAge(userDto.getAge());
+        }
+    }
+
+    private static void setUserEmail(UserDto userDto, User user) {
+        if (userDto.getEmail() != null) {
+            user.setEmail(userDto.getEmail());
+        }
+    }
+
+    private static void setUserPassword(UserDto userDto, User user) {
+        if (userDto.getPassword() != null) {
+            String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
+            user.setPassword(hashedPassword);
+        }
+    }
+
+    private static void setUserRole(UserDto userDto, User user) {
         if (userDto.getRoleDto() == null) {
             userDto.setRoleDto(UserDto.RoleDto.USER);
         }
         user.setRole(User.Role.valueOf(userDto.getRoleDto().toString()));
-        return user;
     }
+
 
     private UserDto toUserDto(User user) {
         UserDto userDto = new UserDto();
@@ -127,10 +167,10 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    private void checkExists(UserDto userDto) {
+    private void checkCreateExistsByEmail(UserDto userDto) {
         User existing = userDao.getByEmail(userDto.getEmail());
         if (existing != null) {
-            throw new RuntimeException("Book with Email " + userDto.getEmail() + "already exists.");
+            throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
         }
     }
 
