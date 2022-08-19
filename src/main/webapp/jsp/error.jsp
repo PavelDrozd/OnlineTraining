@@ -16,6 +16,6 @@
     <body>
         <jsp:include page="navbar/navbar.jsp"/>
 
-        <h1> <fmt:message key="msg.error.somethingwrong"/> </h1>
+        <h1> <fmt:message key="msg.error.somethingwentwrong"/> </h1>
     </body>
 </html>
