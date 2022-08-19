@@ -2,6 +2,8 @@ package App.service.impl;
 
 import App.dao.CourseDao;
 import App.dao.entity.Course;
+import App.exceptions.DaoException;
+import App.exceptions.ServiceException;
 import App.service.CourseService;
 import App.service.dto.CourseDto;
 import lombok.extern.log4j.Log4j2;
@@ -19,61 +21,96 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDto create(CourseDto courseDto) {
-        log.debug("Service 'create' new courseDto: {}.", courseDto);
-        Course existing = courseDao.getByName(courseDto.getName());
-        if (existing != null) {
-            throw new RuntimeException("Course with name " + courseDto.getName() + " already exists.");
+        try {
+            log.debug("Service 'create' new courseDto: {}.", courseDto);
+            Course existing = courseDao.getByName(courseDto.getName());
+            if (existing != null) {
+                throw new RuntimeException("Course with name " + courseDto.getName() + " already exists.");
+            }
+            Course course = courseDao.create(toCourseEntity(courseDto));
+            return toCourseDto(course);
+        } catch (DaoException e) {
+            log.error("Service can't create 'course': {} , throw: {}", courseDto, e);
+            throw new ServiceException(e);
         }
-        Course course = courseDao.create(toCourseEntity(courseDto));
-        return toCourseDto(course);
     }
 
     @Override
     public List<CourseDto> getAll(int limit, long offset) {
-        log.debug("Service 'getAll' command request.");
-        return courseDao.getAll(limit, offset).stream().map(this::toCourseDto).collect(Collectors.toList());
+        try {
+            log.debug("Service 'getAll' command request.");
+            return courseDao.getAll(limit, offset).stream().map(this::toCourseDto).collect(Collectors.toList());
+        } catch (DaoException e) {
+            log.error("Service can't get all 'courses', throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public CourseDto getById(Long id) {
-        log.debug("Service 'getById' id: {}.", id);
-        if (courseDao.getById(id) == null) {
-            return null;
+        try {
+            log.debug("Service 'getById' id: {}.", id);
+            if (courseDao.getById(id) == null) {
+                return null;
+            }
+            return toCourseDto(courseDao.getById(id));
+        } catch (DaoException e) {
+            log.error("Service can't get 'course' by id: {} , throw: {}", id, e);
+            throw new ServiceException(e);
         }
-        return toCourseDto(courseDao.getById(id));
     }
 
     @Override
     public CourseDto update(CourseDto courseDto) {
-        log.debug("Service 'update' userDto: {}.", courseDto);
-        Course existing = courseDao.getByName(courseDto.getName());
-        if (existing != null && !existing.getName().equals(courseDto.getName())) {
-            throw new RuntimeException("Course with name " + courseDto.getName() + "already exists.");
+        try {
+            log.debug("Service 'update' userDto: {}.", courseDto);
+            Course existing = courseDao.getByName(courseDto.getName());
+            if (existing != null && !existing.getName().equals(courseDto.getName())) {
+                throw new RuntimeException("Course with name " + courseDto.getName() + "already exists.");
+            }
+            Course course = courseDao.update(toCourseEntity(courseDto));
+            return toCourseDto(course);
+        } catch (DaoException e) {
+            log.error("Service can't update 'course' to: {} , throw: {}", courseDto, e);
+            throw new ServiceException(e);
         }
-        Course course = courseDao.update(toCourseEntity(courseDto));
-        return toCourseDto(course);
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Service 'delete' by id: {}.", id);
-        if (courseDao.delete(id)) {
-            throw new RuntimeException("Can't delete course by id: " + id);
+        try {
+            log.debug("Service 'delete' by id: {}.", id);
+            if (courseDao.delete(id)) {
+                throw new RuntimeException("Can't delete course by id: " + id);
+            }
+        } catch (DaoException e) {
+            log.error("Service can't delete 'course' by id: {} , throw: {}", id, e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Long count() {
-        return courseDao.count();
+        try {
+            return courseDao.count();
+        } catch (DaoException e) {
+            log.error("Service can't count 'courses', throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public CourseDto getByName(String name) {
-        log.debug("Service 'getByName' name: {}.", name);
-        if (courseDao.getByName(name) == null) {
-            return null;
+        try {
+            log.debug("Service 'getByName' name: {}.", name);
+            if (courseDao.getByName(name) == null) {
+                return null;
+            }
+            return toCourseDto(courseDao.getByName(name));
+        } catch (DaoException e) {
+            log.error("Service can't get 'course' by name: {} , throw: {}", name, e);
+            throw new ServiceException(e);
         }
-        return toCourseDto(courseDao.getByName(name));
     }
 
     private Course toCourseEntity(CourseDto courseDto) {

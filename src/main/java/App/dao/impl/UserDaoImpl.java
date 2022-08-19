@@ -3,6 +3,7 @@ package App.dao.impl;
 import App.dao.UserDao;
 import App.dao.connection.DataSource;
 import App.dao.entity.User;
+import App.exceptions.DaoException;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -64,15 +65,16 @@ public class UserDaoImpl implements UserDao {
             statement.setString(5, user.getPassword());
             statement.setString(6, user.getRole().toString());
             statement.executeUpdate();
-
             ResultSet key = statement.getGeneratedKeys();
+            User created = new User();
             if (key.next()) {
-                return getById(key.getLong("id"));
+                created = getById(key.getLong("id"));
             }
+            return created;
         } catch (SQLException e) {
             log.error("Error executing the 'create' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -90,8 +92,8 @@ public class UserDaoImpl implements UserDao {
             return users;
         } catch (SQLException e) {
             log.error("Error executing the 'getAll' (limit) command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -101,14 +103,15 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID);
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-
+            User user = new User();
             if (result.next()) {
-                return processUser(result);
+                user = processUser(result);
             }
+            return user;
         } catch (SQLException e) {
             log.error("Error executing the 'getById' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -128,8 +131,8 @@ public class UserDaoImpl implements UserDao {
             return getById(user.getId());
         } catch (SQLException e) {
             log.error("Error executing the 'update' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -142,8 +145,8 @@ public class UserDaoImpl implements UserDao {
             return rowDeleted == 1;
         } catch (SQLException e) {
             log.error("Error executing the 'delete' command throw: ", e);
+            throw new DaoException(e);
         }
-        return false;
     }
 
     @Override
@@ -157,8 +160,9 @@ public class UserDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             log.error("Error executing the 'count' command throw: ", e);
+            throw new DaoException(e);
         }
-        throw new RuntimeException("No elements in return statement 'count'.");
+        throw new DaoException("No elements in return statement 'count'.");
     }
 
     @Override
@@ -175,8 +179,8 @@ public class UserDaoImpl implements UserDao {
             return users;
         } catch (SQLException e) {
             log.error("Error executing the 'getByLastName' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -193,8 +197,8 @@ public class UserDaoImpl implements UserDao {
             return users;
         } catch (SQLException e) {
             log.error("Error executing the 'getByLastName' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -204,13 +208,15 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement statement = connection.prepareStatement(SELECT_USERS_BY_EMAIL);
             statement.setString(1, email);
             ResultSet result = statement.executeQuery();
+            User user = new User();
             if (result.next()) {
-                return processUser(result);
+                user = processUser(result);
             }
+            return user;
         } catch (SQLException e) {
             log.error("Error executing the 'getByEmail' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     private User processUser(ResultSet result) throws SQLException {
@@ -222,7 +228,6 @@ public class UserDaoImpl implements UserDao {
         user.setEmail(result.getString("email"));
         user.setPassword(result.getString("password"));
         user.setRole(User.Role.valueOf(result.getString("role")));
-
         return user;
     }
 }

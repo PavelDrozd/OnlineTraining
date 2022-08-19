@@ -7,6 +7,7 @@ import App.dao.connection.DataSource;
 import App.dao.entity.Order;
 import App.dao.entity.OrderInfo;
 import App.dao.entity.User;
+import App.exceptions.DaoException;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -62,13 +63,15 @@ public class OrderDaoImpl implements OrderDao {
             statement.executeUpdate();
 
             ResultSet key = statement.getGeneratedKeys();
+            Order created = new Order();
             if (key.next()) {
-                return getById(key.getLong("id"));
+                created = getById(key.getLong("id"));
             }
+            return created;
         } catch (SQLException e) {
             log.error("Error executing the 'create' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -86,8 +89,8 @@ public class OrderDaoImpl implements OrderDao {
             return orders;
         } catch (SQLException e) {
             log.error("Error executing the 'getAll' (limit) command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -97,14 +100,15 @@ public class OrderDaoImpl implements OrderDao {
             PreparedStatement statement = connection.prepareStatement(SELECT_ORDER_BY_ID);
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-
+            Order order = new Order();
             if (result.next()) {
-                return processOrder(result);
+                order = processOrder(result);
             }
+            return order;
         } catch (SQLException e) {
             log.error("Error executing the 'getById' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -121,8 +125,8 @@ public class OrderDaoImpl implements OrderDao {
             return getById(order.getId());
         } catch (SQLException e) {
             log.error("Error executing the 'update' command throw: ", e);
+            throw new DaoException(e);
         }
-        return null;
     }
 
     @Override
@@ -135,8 +139,8 @@ public class OrderDaoImpl implements OrderDao {
             return rowDeleted == 1;
         } catch (SQLException e) {
             log.error("Error executing the 'delete' command throw: ", e);
+            throw new DaoException(e);
         }
-        return false;
     }
 
     @Override
@@ -149,8 +153,9 @@ public class OrderDaoImpl implements OrderDao {
             }
         } catch (SQLException e) {
             log.error("Error executing the 'count' command throw: ", e);
+            throw new DaoException(e);
         }
-        throw new RuntimeException("No elements in return statement 'count'.");
+        throw new DaoException("No elements in return statement 'count'.");
     }
 
     private Order processOrder(ResultSet resultSet) throws SQLException {
