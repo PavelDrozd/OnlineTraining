@@ -2,6 +2,8 @@ package App.service.impl;
 
 import App.dao.UserDao;
 import App.dao.entity.User;
+import App.exceptions.DaoException;
+import App.exceptions.ServiceException;
 import App.service.UserService;
 import App.service.dto.UserDto;
 import App.service.util.DigestUtil;
@@ -20,82 +22,132 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
-        log.debug("Service 'create' new userDto: {}.", userDto);
-        checkCreateExistsByEmail(userDto);
-        String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
-        userDto.setPassword(hashedPassword);
-        User user = userDao.create(toUserEntity(userDto));
-        return toUserDto(user);
+        try {
+            log.debug("Service 'create' new userDto: {}.", userDto);
+            checkCreateExistsByEmail(userDto);
+            String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
+            userDto.setPassword(hashedPassword);
+            User user = userDao.create(toUserEntity(userDto));
+            return toUserDto(user);
+        } catch (DaoException e) {
+            log.error("Service can't create 'user': {} , throw: {}", userDto, e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public List<UserDto> getAll(int limit, long offset) {
-        log.debug("Service 'getAll' command request.");
-        return userDao.getAll(limit, offset).stream().map(this::toUserDto).collect(Collectors.toList());
+        try {
+            log.debug("Service 'getAll' command request.");
+            return userDao.getAll(limit, offset).stream().map(this::toUserDto).collect(Collectors.toList());
+        } catch (DaoException e) {
+            log.error("Service can't get all 'users', throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public UserDto getById(Long id) {
-        log.debug("Service 'getById' id: {}.", id);
-        if (userDao.getById(id) == null) {
-            throw new RuntimeException("User with ID:" + id + " is null.");
+        try {
+            log.debug("Service 'getById' id: {}.", id);
+            if (userDao.getById(id) == null) {
+                throw new RuntimeException("User with ID:" + id + " is null.");
+            }
+            return toUserDto(userDao.getById(id));
+        } catch (DaoException e) {
+            log.error("Service can't get 'user' by id: {} , throw: {}", id, e);
+            throw new ServiceException(e);
         }
-        return toUserDto(userDao.getById(id));
     }
 
     @Override
     public UserDto update(UserDto userDto) {
-        log.debug("Service 'update' userDto: {}.", userDto);
-        User existing = userDao.getByEmail(userDto.getEmail());
-        if (existing != null && !existing.getId().equals(userDto.getId())) {
-            throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
+        try {
+            log.debug("Service 'update' userDto: {}.", userDto);
+            User existing = userDao.getByEmail(userDto.getEmail());
+            if (existing != null && !existing.getId().equals(userDto.getId())) {
+                throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
+            }
+            User user = userDao.update(toUserEntity(userDto));
+            return toUserDto(user);
+        } catch (DaoException e) {
+            log.error("Service can't update 'user' to: {} , throw: {}", userDto, e);
+            throw new ServiceException(e);
         }
-        User user = userDao.update(toUserEntity(userDto));
-        return toUserDto(user);
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Service 'delete' by id: {}.", id);
-        if (userDao.delete(id)) {
-            throw new RuntimeException("Can't delete user by id: " + id);
+        try {
+            log.debug("Service 'delete' by id: {}.", id);
+            if (userDao.delete(id)) {
+                throw new RuntimeException("Can't delete user by id: " + id);
+            }
+        } catch (DaoException e) {
+            log.error("Service can't delete 'user' by id: {} , throw: {}", id, e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Long count() {
-        return userDao.count();
+        try {
+            return userDao.count();
+        } catch (DaoException e) {
+            log.error("Service can't count 'users', throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public List<UserDto> getByFirstName(String firstName) {
-        log.debug("Service 'getByLastName' lastName: {}.", firstName);
-        return userDao.getByLastName(firstName).stream().map(this::toUserDto).collect(Collectors.toList());
+        try {
+            log.debug("Service 'getByLastName' lastName: {}.", firstName);
+            return userDao.getByLastName(firstName).stream().map(this::toUserDto).collect(Collectors.toList());
+        } catch (DaoException e) {
+            log.error("Service can't get 'users' by firstName: {} , throw: {}", firstName, e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public List<UserDto> getByLastName(String lastName) {
-        log.debug("Service 'getByLastName' lastName: {}.", lastName);
-        return userDao.getByLastName(lastName).stream().map(this::toUserDto).collect(Collectors.toList());
+        try {
+            log.debug("Service 'getByLastName' lastName: {}.", lastName);
+            return userDao.getByLastName(lastName).stream().map(this::toUserDto).collect(Collectors.toList());
+        } catch (DaoException e) {
+            log.error("Service can't get 'users' by lastName: {} , throw: {}", lastName, e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public UserDto getByEmail(String email) {
-        log.debug("Service 'getByEmail' email: {}.", email);
-        return toUserDto(userDao.getByEmail(email));
+        try {
+            log.debug("Service 'getByEmail' email: {}.", email);
+            return toUserDto(userDao.getByEmail(email));
+        } catch (DaoException e) {
+            log.error("Service can't get 'user' by email: {} , throw: {}", email, e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public UserDto login(String email, String password) {
-        UserDto userDto = getByEmail(email);
-        if (userDto == null) {
-            throw new RuntimeException("Incorrect email or password");
+        try {
+            UserDto userDto = getByEmail(email);
+            if (userDto == null) {
+                throw new RuntimeException("Incorrect email or password");
+            }
+            String hashedPassword = DigestUtil.INSTANCE.hash(password);
+            if (!userDto.getPassword().equals(hashedPassword)) {
+                throw new RuntimeException("Incorrect email or password");
+            }
+            return userDto;
+        } catch (DaoException e) {
+            log.error("Service can't login 'user', throw: {}", e);
+            throw new ServiceException(e);
         }
-        String hashedPassword = DigestUtil.INSTANCE.hash(password);
-        if (!userDto.getPassword().equals(hashedPassword)) {
-            throw new RuntimeException("Incorrect email or password");
-        }
-        return userDto;
     }
 
     private User toUserEntity(UserDto userDto) {
@@ -167,7 +219,7 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    private void checkCreateExistsByEmail(UserDto userDto) {
+    private void checkCreateExistsByEmail(UserDto userDto) throws DaoException {
         User existing = userDao.getByEmail(userDto.getEmail());
         if (existing != null) {
             throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");

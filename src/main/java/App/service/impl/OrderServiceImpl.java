@@ -6,6 +6,8 @@ import App.dao.entity.Course;
 import App.dao.entity.Order;
 import App.dao.entity.OrderInfo;
 import App.dao.entity.User;
+import App.exceptions.DaoException;
+import App.exceptions.ServiceException;
 import App.service.OrderService;
 import App.service.dto.OrderDto;
 import App.service.dto.UserDto;
@@ -29,49 +31,84 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto create(OrderDto orderDto) {
-        log.debug("Service 'create' new userDto: {}.", orderDto);
-        Order order = orderDao.create(toOrderEntity(orderDto));
-        return toOrderDto(order);
+        try {
+            log.debug("Service 'create' new userDto: {}.", orderDto);
+            Order order = orderDao.create(toOrderEntity(orderDto));
+            return toOrderDto(order);
+        } catch (DaoException e) {
+            log.error("Service can't create 'order': {} , throw: {}", orderDto, e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public List<OrderDto> getAll(int limit, long offset) {
-        log.debug("Service 'getAll' command request.");
-        return orderDao.getAll(limit, offset).stream().map(this::toOrderDto).collect(Collectors.toList());
+        try {
+            log.debug("Service 'getAll' command request.");
+            return orderDao.getAll(limit, offset).stream().map(this::toOrderDto).collect(Collectors.toList());
+        } catch (DaoException e) {
+            log.error("Service can't get all 'orders', throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public OrderDto getById(Long id) {
-        log.debug("Service 'getById' id: {}.", id);
-        if (orderDao.getById(id) == null) {
-            return null;
+        try {
+            log.debug("Service 'getById' id: {}.", id);
+            if (orderDao.getById(id) == null) {
+                return null;
+            }
+            return toOrderDto(orderDao.getById(id));
+        } catch (DaoException e) {
+            log.error("Service can't get 'order' by id: {} , throw: {}", id, e);
+            throw new ServiceException(e);
         }
-        return toOrderDto(orderDao.getById(id));
     }
 
     @Override
     public OrderDto update(OrderDto orderDto) {
-        log.debug("Service 'update' userDto: {}.", orderDto);
-        Order order = orderDao.update(toOrderEntity(orderDto));
-        return toOrderDto(order);
+        try {
+            log.debug("Service 'update' userDto: {}.", orderDto);
+            Order order = orderDao.update(toOrderEntity(orderDto));
+            return toOrderDto(order);
+        } catch (DaoException e) {
+            log.error("Service can't update 'order' to: {} , throw: {}", orderDto, e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Service 'delete' by id: {}.", id);
-        if (orderDao.delete(id)) {
-            throw new RuntimeException("Can't delete order by id: " + id);
+        try {
+            log.debug("Service 'delete' by id: {}.", id);
+            if (orderDao.delete(id)) {
+                throw new RuntimeException("Can't delete order by id: " + id);
+            }
+        } catch (DaoException e) {
+            log.error("Service can't delete 'order' by id: {} , throw: {}", id, e);
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public Long count() {
-        return orderDao.count();
+        try {
+            return orderDao.count();
+        } catch (DaoException e) {
+            log.error("Service can't count 'orders', throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public OrderDto processCart(Map<Long, Integer> cart, UserDto userDto) {
-        return createOrderEntity(cart, userDto);
+        try {
+            return createOrderEntity(cart, userDto);
+        } catch (DaoException e) {
+            log.error("Service can't create 'order' entity, throw: {}", e);
+            throw new ServiceException(e);
+        }
     }
 
     private OrderDto createOrderEntity(Map<Long, Integer> cart, UserDto userDto) {
