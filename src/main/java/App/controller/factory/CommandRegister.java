@@ -29,43 +29,54 @@ import App.service.UserService;
 
 public enum CommandRegister {
     //ERROR COMMANDS
-    ERROR(new ErrorCommand()),
+    ERROR(new ErrorCommand(), SecurityLevel.USER),
 
     //USER COMMANDS
-    USER(new UserCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    USERS(new UsersCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    CREATE_USER_FORM(new CreateUserFormCommand()),
-    CREATE_USER(new CreateUserCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    LOGIN_FORM(new LoginFormCommand()),
-    LOGIN(new LoginCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    LOGOUT(new LogoutCommand()),
+    USER(new UserCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
+    USERS(new UsersCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.ADMIN),
+    CREATE_USER_FORM(new CreateUserFormCommand(), SecurityLevel.USER),
+    CREATE_USER(new CreateUserCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
+    LOGIN_FORM(new LoginFormCommand(), SecurityLevel.USER),
+    LOGIN(new LoginCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
+    LOGOUT(new LogoutCommand(), SecurityLevel.USER),
 
     //USER PROFILE
-    PROFILE(new ProfileCommand()),
-    EDIT_NAME_FORM(new EditNameFormCommand()),
-    EDIT_NAME(new EditNameCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    EDIT_AGE_FORM(new EditAgeFormCommand()),
-    EDIT_AGE(new EditAgeCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    EDIT_EMAIL_FORM(new EditEmailFormCommand()),
-    EDIT_EMAIL(new EditEmailCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
-    EDIT_PASSWORD_FORM(new EditPasswordFormCommand()),
-    EDIT_PASSWORD(new EditPasswordCommand(ServiceFactory.INSTANCE.getService(UserService.class))),
+    PROFILE(new ProfileCommand(), SecurityLevel.USER),
+    EDIT_NAME_FORM(new EditNameFormCommand(), SecurityLevel.USER),
+    EDIT_NAME(new EditNameCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
+    EDIT_AGE_FORM(new EditAgeFormCommand(), SecurityLevel.USER),
+    EDIT_AGE(new EditAgeCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
+    EDIT_EMAIL_FORM(new EditEmailFormCommand(), SecurityLevel.USER),
+    EDIT_EMAIL(new EditEmailCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
+    EDIT_PASSWORD_FORM(new EditPasswordFormCommand(), SecurityLevel.USER),
+    EDIT_PASSWORD(new EditPasswordCommand(ServiceFactory.INSTANCE.getService(UserService.class)), SecurityLevel.USER),
 
     //COURSE COMMANDS
-    COURSE(new CourseCommand(ServiceFactory.INSTANCE.getService(CourseService.class))),
-    COURSES(new CoursesCommand(ServiceFactory.INSTANCE.getService(CourseService.class))),
+    COURSE(new CourseCommand(ServiceFactory.INSTANCE.getService(CourseService.class)), SecurityLevel.USER),
+    COURSES(new CoursesCommand(ServiceFactory.INSTANCE.getService(CourseService.class)), SecurityLevel.USER),
 
     //ORDERS COMMAND
-    ORDER(new OrderCommand(ServiceFactory.INSTANCE.getService(OrderService.class))),
-    ORDERS(new OrdersCommand(ServiceFactory.INSTANCE.getService(OrderService.class)));//
-    private final Command command;
+    ORDER(new OrderCommand(ServiceFactory.INSTANCE.getService(OrderService.class)), SecurityLevel.USER),
+    ORDERS(new OrdersCommand(ServiceFactory.INSTANCE.getService(OrderService.class)), SecurityLevel.ADMIN);//
 
-    CommandRegister(Command command) {
+    private final Command command;
+    private final SecurityLevel securityLevel;
+
+    CommandRegister(Command command, SecurityLevel securityLevel) {
         this.command = command;
+        this.securityLevel = securityLevel;
     }
 
-    public Command getCommand() {
+    public enum SecurityLevel {
+        USER, EMPLOYEE, ADMIN
+    }
+
+    Command getCommand() {
         return command;
+    }
+
+    SecurityLevel getSecurityLevel() {
+        return securityLevel;
     }
 
 }
