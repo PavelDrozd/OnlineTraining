@@ -18,7 +18,7 @@ public class EditEmailCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         String email = req.getParameter("email");
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         UserDto user = (UserDto) session.getAttribute("user");
         user.setEmail(email);
         UserDto edited = userService.update(user);

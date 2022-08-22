@@ -18,7 +18,7 @@ public class EditPasswordCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         String password = req.getParameter("password");
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         UserDto user = (UserDto) session.getAttribute("user");
         user.setPassword(password);
         UserDto edited = userService.update(user);

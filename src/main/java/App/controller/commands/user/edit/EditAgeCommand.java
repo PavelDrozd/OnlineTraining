@@ -18,7 +18,7 @@ public class EditAgeCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         Integer age = Integer.parseInt(req.getParameter("age"));
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         UserDto user = (UserDto) session.getAttribute("user");
         user.setAge(age);
         UserDto edited = userService.update(user);

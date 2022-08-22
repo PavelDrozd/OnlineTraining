@@ -19,7 +19,7 @@ public class EditNameCommand implements Command {
     public String execute(HttpServletRequest req) {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         UserDto user = (UserDto) session.getAttribute("user");
         user.setFirstName(firstName);
         user.setLastName(lastName);

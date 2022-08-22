@@ -12,7 +12,7 @@ public class ProfileCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest req) {
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         UserDto user = (UserDto) session.getAttribute("user");
         if (user == null) {
             req.setAttribute("message", "Please login.");
