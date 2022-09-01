@@ -7,9 +7,9 @@ This site allows you to get information about the courses available, register an
 
 ## Technologies used:-
 ### Front-End Development:
-- Html;
-- Css;
-- Javascript.
+- HTML;
+- CSS;
+- JavaScript.
 
 ### Back-End Development
 - Java [JDK 17];
