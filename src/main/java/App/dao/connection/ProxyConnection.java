@@ -1,5 +1,6 @@
 package App.dao.connection;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Array;
@@ -21,14 +22,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+@RequiredArgsConstructor
 @Log4j2
 public class ProxyConnection implements Connection {
     private final Connection connection;
-
-    ProxyConnection(Connection connection) {
-        this.connection = connection;
-    }
-
+    private final DataSource dataSource;
 
     @Override
     public Statement createStatement() throws SQLException {
@@ -72,7 +70,7 @@ public class ProxyConnection implements Connection {
 
     @Override
     public void close() {
-        DataSource.INSTANCE.getConnectionPool().releaseConnection(this);
+        dataSource.getConnectionPool().releaseConnection(this);
     }
 
     void reallyClose() throws SQLException {

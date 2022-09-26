@@ -8,7 +8,9 @@ import App.dao.entity.Order;
 import App.dao.entity.OrderInfo;
 import App.dao.entity.User;
 import App.exceptions.DaoException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +20,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Log4j2
+@Repository
 public class OrderDaoImpl implements OrderDao {
     public static final String SELECT_ORDER = //
             "SELECT o.id, o.user_id, s.name AS status, o.total_cost ";
@@ -44,12 +48,6 @@ public class OrderDaoImpl implements OrderDao {
     private final DataSource dataSource;
     private final UserDao userDao;
     private final OrderInfoDao orderInfoDao;
-
-    public OrderDaoImpl(DataSource dataSource, UserDao userDao, OrderInfoDao orderInfoDao) {
-        this.dataSource = dataSource;
-        this.userDao = userDao;
-        this.orderInfoDao = orderInfoDao;
-    }
 
     @Override
     public Order create(Order order) {

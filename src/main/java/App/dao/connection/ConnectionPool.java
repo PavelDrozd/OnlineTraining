@@ -1,6 +1,5 @@
 package App.dao.connection;
 
-import App.ConfiguraionManager;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -13,11 +12,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 @Log4j2
 public class ConnectionPool {
-    private final static int POOL_SIZE = Integer.parseInt(ConfiguraionManager.INSTANCE.getProperty("pool.size"));
+    private final static int POOL_SIZE = 2;
     private final BlockingDeque<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenAwayConnection;
 
-    ConnectionPool(String driver, String url, String user, String password) {
+    ConnectionPool(String driver, String url, String user, String password, DataSource dataSource) {
         freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
         givenAwayConnection = new ArrayDeque<>();
         try {
@@ -25,7 +24,7 @@ public class ConnectionPool {
             log.info("Database driver loaded");
             for (int i = 0; i < POOL_SIZE; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
-                freeConnections.offer(new ProxyConnection(connection));
+                freeConnections.offer(new ProxyConnection(connection, dataSource));
                 log.info("Connection created.");
             }
         } catch (SQLException | ClassNotFoundException e) {
