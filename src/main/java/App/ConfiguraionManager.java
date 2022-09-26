@@ -1,12 +1,13 @@
 package App;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public enum ConfiguraionManager {
-    INSTANCE;
-
+@Component
+public class ConfiguraionManager {
     public static final String CONFIG_FILE = "/application.properties";
     private final Properties properties;
 
