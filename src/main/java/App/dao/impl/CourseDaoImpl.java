@@ -4,7 +4,9 @@ import App.dao.CourseDao;
 import App.dao.connection.DataSource;
 import App.dao.entity.Course;
 import App.exceptions.DaoException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Log4j2
+@Repository
 public class CourseDaoImpl implements CourseDao {
     public static final String SELECT_COURSE = //
             "SELECT c.id, c.name, c.cost, c.duration_days ";
@@ -38,10 +42,6 @@ public class CourseDaoImpl implements CourseDao {
             + "WHERE c.deleted = false";
 
     private final DataSource dataSource;
-
-    public CourseDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public Course create(Course course) {

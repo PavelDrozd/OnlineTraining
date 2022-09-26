@@ -6,7 +6,9 @@ import App.dao.connection.DataSource;
 import App.dao.entity.Course;
 import App.dao.entity.OrderInfo;
 import App.exceptions.DaoException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +18,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Log4j2
+@Repository
 public class OrderInfoDaoImpl implements OrderInfoDao {
     public static final String SELECT_ORDERS_INFO = //
             "SELECT i.id, i.course_id, i.order_id, i.course_price ";
@@ -42,11 +46,6 @@ public class OrderInfoDaoImpl implements OrderInfoDao {
 
     private final DataSource dataSource;
     private final CourseDao courseDao;
-
-    public OrderInfoDaoImpl(DataSource dataSource, CourseDao courseDao) {
-        this.dataSource = dataSource;
-        this.courseDao = courseDao;
-    }
 
     @Override
     public OrderInfo create(OrderInfo orderInfo) {

@@ -4,7 +4,9 @@ import App.dao.UserDao;
 import App.dao.connection.DataSource;
 import App.dao.entity.User;
 import App.exceptions.DaoException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Log4j2
+@Repository
 public class UserDaoImpl implements UserDao {
 
     public static final String SELECT_USER = //
@@ -47,10 +51,6 @@ public class UserDaoImpl implements UserDao {
             + "WHERE u.deleted = false";
 
     private final DataSource dataSource;
-
-    public UserDaoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public User create(User user) {
