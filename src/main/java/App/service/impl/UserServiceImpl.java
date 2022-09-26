@@ -7,18 +7,18 @@ import App.exceptions.ServiceException;
 import App.service.UserService;
 import App.service.dto.UserDto;
 import App.service.util.DigestUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Log4j2
+@Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
 
     @Override
     public UserDto create(UserDto userDto) {

@@ -11,7 +11,9 @@ import App.exceptions.ServiceException;
 import App.service.OrderService;
 import App.service.dto.OrderDto;
 import App.service.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,15 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Log4j2
+@Service
 public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
     private final CourseDao courseDao;
-
-    public OrderServiceImpl(OrderDao orderDao, CourseDao courseDao) {
-        this.orderDao = orderDao;
-        this.courseDao = courseDao;
-    }
 
     @Override
     public OrderDto create(OrderDto orderDto) {
