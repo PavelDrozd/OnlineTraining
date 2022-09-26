@@ -1,7 +1,7 @@
 package App.controller;
 
+import App.ContextConfig;
 import App.controller.factory.CommandFactory;
-import App.dao.connection.DataSource;
 import App.exceptions.ControllerException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
@@ -17,7 +19,9 @@ import static App.controller.commands.PagesConstant.REDIRECT;
 
 @WebServlet("/controller")
 @Log4j2
-public class Controller extends HttpServlet {
+@Controller
+public class WebController extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         process(req, resp);
@@ -37,11 +41,6 @@ public class Controller extends HttpServlet {
             log.error(e);
             toErrorPage(req, resp);
         }
-    }
-
-    @Override
-    public void destroy() {
-        DataSource.INSTANCE.close();
     }
 
     private void sendResponse(HttpServletRequest req, HttpServletResponse resp, Command commandInstance) throws IOException, ServletException {
