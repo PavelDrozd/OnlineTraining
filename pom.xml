@@ -25,6 +25,7 @@
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
         <lombok.version>1.18.24</lombok.version>
         <spring.version>5.3.23</spring.version>
+        <hikari.version>5.0.1</hikari.version>
     </properties>
 
     <dependencies>
@@ -97,6 +98,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
         </dependency>
 
     </dependencies>
