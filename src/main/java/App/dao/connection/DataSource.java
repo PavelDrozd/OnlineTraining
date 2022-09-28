@@ -1,6 +1,7 @@
 package App.dao.connection;
 
 import App.ConfiguraionManager;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class DataSource implements Closeable {
 
     public Connection getConnection() {
         if (connectionPool == null) {
-            connectionPool = new ConnectionPool(driver, url, user, password, this);
+            connectionPool = new ConnectionPool(driver, url, user, password);
             log.info("Successful connection to the sql server. Connection pool initialized.");
         }
         return connectionPool.getConnection();
@@ -40,6 +41,7 @@ public class DataSource implements Closeable {
 
 
     @Override
+    @PreDestroy
     public void close() {
         if (connectionPool != null) {
             connectionPool.destroy();
