@@ -16,7 +16,7 @@ public class ConnectionPool {
     private final BlockingDeque<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenAwayConnection;
 
-    ConnectionPool(String driver, String url, String user, String password, DataSource dataSource) {
+    ConnectionPool(String driver, String url, String user, String password) {
         freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
         givenAwayConnection = new ArrayDeque<>();
         try {
@@ -24,7 +24,7 @@ public class ConnectionPool {
             log.info("Database driver loaded");
             for (int i = 0; i < POOL_SIZE; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
-                freeConnections.offer(new ProxyConnection(connection, dataSource));
+                freeConnections.offer(new ProxyConnection(connection));
                 log.info("Connection created.");
             }
         } catch (SQLException | ClassNotFoundException e) {

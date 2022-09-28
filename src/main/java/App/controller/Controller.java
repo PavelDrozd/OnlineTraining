@@ -1,7 +1,8 @@
 package App.controller;
 
-import App.ContextConfig;
-import App.controller.factory.CommandFactory;
+import App.controller.commands.Command;
+import App.controller.commands.CommandRegister;
+import App.controller.commands.user.UsersCommand;
 import App.exceptions.ControllerException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,18 +10,27 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
 
 import static App.controller.commands.PagesConstant.ERROR_PAGE;
 import static App.controller.commands.PagesConstant.REDIRECT;
 
 @WebServlet("/controller")
 @Log4j2
-@Controller
-public class WebController extends HttpServlet {
+public class Controller extends HttpServlet {
+
+    @Override
+    public void init() {
+        log.info("SERVLET INIT");
+    }
+
+    @Override
+    public void destroy() {
+        log.info("SERVLET DESTROY");
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -35,7 +45,8 @@ public class WebController extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String command = req.getParameter("command");
-            Command commandInstance = CommandFactory.INSTANCE.getCommand(command);
+            Class<? extends Command> commandDefinition = CommandRegister.getCommand(command);
+            Command commandInstance = ContextListener.context.getBean(commandDefinition);
             sendResponse(req, resp, commandInstance);
         } catch (Exception e) {
             log.error(e);
