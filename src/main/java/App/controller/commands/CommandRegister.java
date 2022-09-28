@@ -21,7 +21,6 @@ import App.controller.commands.user.profile.ProfileCommand;
 import App.controller.commands.user.session.LoginCommand;
 import App.controller.commands.user.session.LoginFormCommand;
 import App.controller.commands.user.session.LogoutCommand;
-import org.springframework.stereotype.Component;
 
 
 

@@ -2,7 +2,6 @@ package App.controller;
 
 import App.controller.commands.Command;
 import App.controller.commands.CommandRegister;
-import App.controller.commands.user.UsersCommand;
 import App.exceptions.ControllerException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
 
 import static App.controller.commands.PagesConstant.ERROR_PAGE;
 import static App.controller.commands.PagesConstant.REDIRECT;

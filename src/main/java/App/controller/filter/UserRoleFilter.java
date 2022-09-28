@@ -1,6 +1,5 @@
 package App.controller.filter;
 
-import App.controller.ContextListener;
 import App.controller.commands.CommandRegister;
 import App.service.dto.UserDto;
 import jakarta.servlet.FilterChain;
