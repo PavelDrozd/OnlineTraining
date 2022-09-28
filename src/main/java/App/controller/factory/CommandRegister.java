@@ -1,32 +1,18 @@
 package App.controller.factory;
 
-import App.controller.Command;
-import App.controller.commands.course.CourseCommand;
-import App.controller.commands.course.CoursesCommand;
+import App.controller.commands.Command;
 import App.controller.commands.error.ErrorCommand;
-import App.controller.commands.order.OrderCommand;
-import App.controller.commands.order.OrdersCommand;
-import App.controller.commands.user.CreateUserCommand;
 import App.controller.commands.user.CreateUserFormCommand;
-import App.controller.commands.user.edit.EditAgeCommand;
 import App.controller.commands.user.edit.EditAgeFormCommand;
-import App.controller.commands.user.edit.EditEmailCommand;
 import App.controller.commands.user.edit.EditEmailFormCommand;
-import App.controller.commands.user.edit.EditNameCommand;
 import App.controller.commands.user.edit.EditNameFormCommand;
-import App.controller.commands.user.edit.EditPasswordCommand;
 import App.controller.commands.user.edit.EditPasswordFormCommand;
 import App.controller.commands.user.profile.ProfileCommand;
-import App.controller.commands.user.session.LoginCommand;
 import App.controller.commands.user.session.LoginFormCommand;
-import App.controller.commands.user.UserCommand;
-import App.controller.commands.user.UsersCommand;
 import App.controller.commands.user.session.LogoutCommand;
-import App.service.CourseService;
-import App.service.OrderService;
-import App.service.UserService;
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public enum CommandRegister {
     //ERROR COMMANDS
     ERROR(new ErrorCommand(), SecurityLevel.USER),

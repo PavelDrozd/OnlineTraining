@@ -1,6 +1,6 @@
 package App.controller;
 
-import App.ContextConfig;
+import App.controller.commands.Command;
 import App.controller.factory.CommandFactory;
 import App.exceptions.ControllerException;
 import jakarta.servlet.ServletException;
@@ -9,8 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
@@ -19,8 +17,7 @@ import static App.controller.commands.PagesConstant.REDIRECT;
 
 @WebServlet("/controller")
 @Log4j2
-@Controller
-public class WebController extends HttpServlet {
+public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {

@@ -1,6 +1,6 @@
 package App.controller.factory;
 
-import App.controller.Command;
+import App.controller.commands.Command;
 
 public enum CommandFactory {
     INSTANCE;
