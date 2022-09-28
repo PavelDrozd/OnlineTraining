@@ -1,7 +1,7 @@
 package App.controller.filter;
 
-import App.controller.factory.CommandFactory;
-import App.controller.factory.CommandRegister;
+import App.controller.ContextListener;
+import App.controller.commands.CommandRegister;
 import App.service.dto.UserDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,12 +10,14 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 import static App.controller.commands.PagesConstant.INDEX_PAGE;
 
 @WebFilter("/*")
+@Component
 public class UserRoleFilter extends HttpFilter {
 
     @Override
@@ -29,7 +31,7 @@ public class UserRoleFilter extends HttpFilter {
 
     private void checkRoles(HttpServletRequest req, HttpServletResponse res, String command, String userRole) throws ServletException, IOException {
         CommandRegister.SecurityLevel userLevel = CommandRegister.SecurityLevel.valueOf(userRole);
-        CommandRegister.SecurityLevel commandLevel = CommandFactory.INSTANCE.getSecurityLevel(command);
+        CommandRegister.SecurityLevel commandLevel = CommandRegister.getSecurityLevel(command);
         if (userLevel.ordinal() < commandLevel.ordinal()) {
             req.setAttribute("message", "Insufficient permissions.");
             req.getRequestDispatcher(INDEX_PAGE).forward(req, res);
