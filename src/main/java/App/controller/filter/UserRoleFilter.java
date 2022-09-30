@@ -16,7 +16,6 @@ import java.io.IOException;
 import static App.controller.commands.PagesConstant.INDEX_PAGE;
 
 @WebFilter("/*")
-@Component
 public class UserRoleFilter extends HttpFilter {
 
     @Override
