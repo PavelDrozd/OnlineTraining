@@ -1,4 +1,4 @@
-package App.controller;
+package App.controller.commands;
 
 import jakarta.servlet.http.HttpServletRequest;
 

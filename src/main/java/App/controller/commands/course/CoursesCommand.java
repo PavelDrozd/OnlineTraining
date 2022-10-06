@@ -1,21 +1,21 @@
 package App.controller.commands.course;
 
-import App.controller.Command;
+import App.controller.commands.Command;
 import App.controller.util.PagingUtil;
 import App.service.CourseService;
 import App.service.dto.CourseDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 import static App.controller.commands.PagesConstant.COURSES_PAGE;
 
+@Controller
+@RequiredArgsConstructor
 public class CoursesCommand implements Command {
     private final CourseService courseService;
-
-    public CoursesCommand(CourseService courseService) {
-        this.courseService = courseService;
-    }
 
     @Override
     public String execute(HttpServletRequest req) {

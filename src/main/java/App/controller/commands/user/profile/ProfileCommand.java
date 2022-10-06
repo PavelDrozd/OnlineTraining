@@ -1,13 +1,15 @@
 package App.controller.commands.user.profile;
 
-import App.controller.Command;
+import App.controller.commands.Command;
 import App.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
 
 import static App.controller.commands.PagesConstant.LOGIN_FORM_PAGE;
 import static App.controller.commands.PagesConstant.PROFILE_PAGE;
 
+@Controller
 public class ProfileCommand implements Command {
 
     @Override

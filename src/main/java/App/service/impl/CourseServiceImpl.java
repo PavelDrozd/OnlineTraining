@@ -6,18 +6,18 @@ import App.exceptions.DaoException;
 import App.exceptions.ServiceException;
 import App.service.CourseService;
 import App.service.dto.CourseDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Log4j2
+@Service
 public class CourseServiceImpl implements CourseService {
     private final CourseDao courseDao;
-
-    public CourseServiceImpl(CourseDao courseDao) {
-        this.courseDao = courseDao;
-    }
 
     @Override
     public CourseDto create(CourseDto courseDto) {

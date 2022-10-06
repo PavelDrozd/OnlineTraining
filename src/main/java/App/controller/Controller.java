@@ -1,7 +1,7 @@
 package App.controller;
 
-import App.controller.factory.CommandFactory;
-import App.dao.connection.DataSource;
+import App.controller.commands.Command;
+import App.controller.commands.CommandRegister;
 import App.exceptions.ControllerException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,6 +18,17 @@ import static App.controller.commands.PagesConstant.REDIRECT;
 @WebServlet("/controller")
 @Log4j2
 public class Controller extends HttpServlet {
+
+    @Override
+    public void init() {
+        log.info("SERVLET INIT");
+    }
+
+    @Override
+    public void destroy() {
+        log.info("SERVLET DESTROY");
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         process(req, resp);
@@ -31,17 +42,13 @@ public class Controller extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String command = req.getParameter("command");
-            Command commandInstance = CommandFactory.INSTANCE.getCommand(command);
+            Class<? extends Command> commandDefinition = CommandRegister.getCommand(command);
+            Command commandInstance = ContextListener.context.getBean(commandDefinition);
             sendResponse(req, resp, commandInstance);
         } catch (Exception e) {
             log.error(e);
             toErrorPage(req, resp);
         }
-    }
-
-    @Override
-    public void destroy() {
-        DataSource.INSTANCE.close();
     }
 
     private void sendResponse(HttpServletRequest req, HttpServletResponse resp, Command commandInstance) throws IOException, ServletException {
