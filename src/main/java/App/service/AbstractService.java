@@ -6,7 +6,7 @@ public interface AbstractService<K, T> {
 
     T create(T t);
 
-    List<T> getAll(int limit, long offset);
+    List<T> getAll(int limit, int offset);
 
     T getById(K id);
 
@@ -14,5 +14,5 @@ public interface AbstractService<K, T> {
 
     void delete(K id);
 
-    K count();
+    Integer count();
 }

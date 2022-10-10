@@ -1,6 +1,6 @@
 package App.service.dto;
 
-import App.dao.entity.OrderInfo;
+import App.repository.entity.OrderInfo;
 import lombok.Data;
 
 import java.math.BigDecimal;
