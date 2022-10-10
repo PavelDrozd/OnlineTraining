@@ -1,10 +1,10 @@
-package App.dao;
+package App.repository;
 
-import App.dao.entity.User;
+import App.repository.entity.User;
 
 import java.util.List;
 
-public interface UserDao extends AbstractDao<Long, User> {
+public interface UserRepository extends AbstractRepository<Long, User> {
 
     List<User> getByFirstName(String firstName);
 
