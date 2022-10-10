@@ -1,35 +1,27 @@
 package App;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 @Configuration
 @ComponentScan
+@EnableTransactionManagement
 public class ContextConfig {
 
     @Bean
-    public ConfiguraionManager configuraionManager() {
-        return new ConfiguraionManager();
+    public EntityManagerFactory entityManagerFactory() {
+        return Persistence.createEntityManagerFactory("psql");
     }
 
     @Bean
-    public DataSource dataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(configuraionManager().getProperty("db.local.url"));
-        dataSource.setUsername(configuraionManager().getProperty("db.local.user"));
-        dataSource.setPassword(configuraionManager().getProperty("db.local.password"));
-        dataSource.setDriverClassName(configuraionManager().getProperty("db.local.driver"));
-        return dataSource;
+    public TransactionManager transactionManager () {
+        return new JpaTransactionManager(entityManagerFactory());
     }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
-    }
-
 }
