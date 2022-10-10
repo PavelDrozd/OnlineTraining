@@ -5,27 +5,27 @@ import lombok.Data;
 
 public class PagingUtil {
 
-    public static Paging getPaging(HttpServletRequest req, long totalEntites) {
+    public static Paging getPaging(HttpServletRequest req, int totalEntites) {
         int limit = getLimit(req);
-        long totalPages = getTotalPages(totalEntites, limit);
-        long page = getPage(req, totalPages);
-        long offset = (page - 1) * limit;
+        int totalPages = getTotalPages(totalEntites, limit);
+        int page = getPage(req, totalPages);
+        int offset = (page - 1) * limit;
         return new Paging(limit, offset, page, totalPages);
     }
 
-    private static long getPage(HttpServletRequest req, long totalPages) {
+    private static int getPage(HttpServletRequest req, int totalPages) {
         String currentPage = req.getParameter("page");
-        long page;
+        int page;
         if (currentPage == null || currentPage.equals("") || currentPage.matches(".*\\D+.*")) {
             page = 1;
         } else {
-            page = Long.parseLong(currentPage);
+            page = Integer.parseInt(currentPage);
             page = getValidPage(totalPages, page);
         }
         return page;
     }
 
-    private static long getValidPage(long totalPages, long page) {
+    private static int getValidPage(int totalPages, int page) {
         if (page < 1) {
             page = 1;
         }
@@ -49,8 +49,8 @@ public class PagingUtil {
         return limit;
     }
 
-    private static long getTotalPages(long totalEntities, int limit) {
-        long pages = totalEntities / limit;
+    private static int getTotalPages(int totalEntities, int limit) {
+        int pages = totalEntities / limit;
         int additionalPage = (totalEntities - (pages * limit) > 0) ? 1 : 0;
         return pages + additionalPage;
     }
@@ -58,9 +58,9 @@ public class PagingUtil {
     @Data
     public static class Paging {
         private final int limit;
-        private final long offset;
-        private final long page;
-        private final long totalPages;
+        private final int offset;
+        private final int page;
+        private final int totalPages;
     }
 
 }
