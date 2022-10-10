@@ -66,7 +66,7 @@ public enum CommandRegister {
     }
 
     public enum SecurityLevel {
-        USER, EMPLOYEE, ADMIN
+        USER, STUDENT, TEACHER, ADMIN
     }
 
     public static SecurityLevel getSecurityLevel(String command) {
