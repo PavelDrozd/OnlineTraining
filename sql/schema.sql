@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS order_status CASCADE;
 
 create TABLE IF NOT EXISTS  order_status (
 	id BIGSERIAL PRIMARY KEY,
-	name varchar(20) UNIQUE NOT NULL
+	"name" varchar(20) UNIQUE NOT NULL
 );
 
 create TABLE IF NOT EXISTS  courses (
@@ -51,7 +51,7 @@ create TABLE IF NOT EXISTS  users (
     "age" SMALLINT,
     email varchar (30) NOT NULL,
     password varchar (50) NOT NULL,
-    role_id bigint NOT NULL REFERENCES roles,
+    role_id int4 NOT NULL REFERENCES roles,
     deleted boolean NOT NULL DEFAULT FALSE
 
 );

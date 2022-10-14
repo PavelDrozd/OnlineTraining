@@ -1,8 +1,8 @@
-package App.service;
+package App.repository;
 
 import java.util.List;
 
-public interface AbstractService<K, T> {
+public interface AbstractRepository<K, T> {
 
     T create(T t);
 

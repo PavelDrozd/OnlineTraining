@@ -1,7 +1,7 @@
 package App.service.impl;
 
-import App.dao.UserDao;
-import App.dao.entity.User;
+import App.repository.UserRepository;
+import App.repository.entity.User;
 import App.exceptions.DaoException;
 import App.exceptions.ServiceException;
 import App.service.UserService;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Override
     public UserDto create(UserDto userDto) {
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
             checkCreateExistsByEmail(userDto);
             String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
             userDto.setPassword(hashedPassword);
-            User user = userDao.create(toUserEntity(userDto));
+            User user = userRepository.create(toUserEntity(userDto));
             return toUserDto(user);
         } catch (DaoException e) {
             log.error("Service can't create 'user': {} , throw: {}", userDto, e);
@@ -36,10 +36,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll(int limit, long offset) {
+    public List<UserDto> getAll(int limit, int offset) {
         try {
             log.debug("Service 'getAll' command request.");
-            return userDao.getAll(limit, offset).stream().map(this::toUserDto).collect(Collectors.toList());
+            return userRepository.getAll(limit, offset).stream().map(this::toUserDto).collect(Collectors.toList());
         } catch (DaoException e) {
             log.error("Service can't get all 'users', throw: {}", e);
             throw new ServiceException(e);
@@ -50,10 +50,10 @@ public class UserServiceImpl implements UserService {
     public UserDto getById(Long id) {
         try {
             log.debug("Service 'getById' id: {}.", id);
-            if (userDao.getById(id) == null) {
+            if (userRepository.getById(id) == null) {
                 throw new RuntimeException("User with ID:" + id + " is null.");
             }
-            return toUserDto(userDao.getById(id));
+            return toUserDto(userRepository.getById(id));
         } catch (DaoException e) {
             log.error("Service can't get 'user' by id: {} , throw: {}", id, e);
             throw new ServiceException(e);
@@ -64,11 +64,11 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto userDto) {
         try {
             log.debug("Service 'update' userDto: {}.", userDto);
-            User existing = userDao.getByEmail(userDto.getEmail());
+            User existing = userRepository.getByEmail(userDto.getEmail());
             if (existing != null && !existing.getId().equals(userDto.getId())) {
                 throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
             }
-            User user = userDao.update(toUserEntity(userDto));
+            User user = userRepository.update(toUserEntity(userDto));
             return toUserDto(user);
         } catch (DaoException e) {
             log.error("Service can't update 'user' to: {} , throw: {}", userDto, e);
@@ -78,21 +78,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        try {
             log.debug("Service 'delete' by id: {}.", id);
-            if (userDao.delete(id)) {
-                throw new RuntimeException("Can't delete user by id: " + id);
-            }
-        } catch (DaoException e) {
-            log.error("Service can't delete 'user' by id: {} , throw: {}", id, e);
-            throw new ServiceException(e);
-        }
+            userRepository.delete(id);
     }
 
     @Override
-    public Long count() {
+    public Integer count() {
         try {
-            return userDao.count();
+            return userRepository.count();
         } catch (DaoException e) {
             log.error("Service can't count 'users', throw: {}", e);
             throw new ServiceException(e);
@@ -103,7 +96,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getByFirstName(String firstName) {
         try {
             log.debug("Service 'getByLastName' lastName: {}.", firstName);
-            return userDao.getByLastName(firstName).stream().map(this::toUserDto).collect(Collectors.toList());
+            return userRepository.getByLastName(firstName).stream().map(this::toUserDto).collect(Collectors.toList());
         } catch (DaoException e) {
             log.error("Service can't get 'users' by firstName: {} , throw: {}", firstName, e);
             throw new ServiceException(e);
@@ -114,7 +107,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getByLastName(String lastName) {
         try {
             log.debug("Service 'getByLastName' lastName: {}.", lastName);
-            return userDao.getByLastName(lastName).stream().map(this::toUserDto).collect(Collectors.toList());
+            return userRepository.getByLastName(lastName).stream().map(this::toUserDto).collect(Collectors.toList());
         } catch (DaoException e) {
             log.error("Service can't get 'users' by lastName: {} , throw: {}", lastName, e);
             throw new ServiceException(e);
@@ -125,7 +118,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getByEmail(String email) {
         try {
             log.debug("Service 'getByEmail' email: {}.", email);
-            return toUserDto(userDao.getByEmail(email));
+            return toUserDto(userRepository.getByEmail(email));
         } catch (DaoException e) {
             log.error("Service can't get 'user' by email: {} , throw: {}", email, e);
             throw new ServiceException(e);
@@ -220,7 +213,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkCreateExistsByEmail(UserDto userDto) throws DaoException {
-        User existing = userDao.getByEmail(userDto.getEmail());
+        User existing = userRepository.getByEmail(userDto.getEmail());
         if (existing != null) {
             throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
         }
