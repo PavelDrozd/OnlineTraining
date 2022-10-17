@@ -1,9 +1,9 @@
 package app.repository.impl;
 
+import app.interceptors.LogInvocation;
 import app.repository.UserRepository;
 import app.repository.entity.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Log4j2
 @Repository
 @Transactional
 public class UserRepositoryImpl implements UserRepository {
@@ -25,64 +24,64 @@ public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private EntityManager manager;
 
+    @LogInvocation
     @Override
     public User create(User user) {
-        log.debug("Database query to the 'INSERT' new user: {}.", user);
         manager.persist(user);
         return user;
     }
 
+    @LogInvocation
     @Override
     public List<User> getAll(int limit, int offset) {
-        log.debug("Database query to the 'SELECT' users (limit) command");
         return manager.createQuery(FIND_ALL_USERS, User.class)//
                 .setMaxResults(limit)//
                 .setFirstResult(offset)//
                 .getResultList();
     }
 
+    @LogInvocation
     @Override
     public User getById(Long id) {
-        log.debug("Database query to the 'SELECT' user by id: {}.", id);
         return manager.find(User.class, id);
     }
 
+    @LogInvocation
     @Override
     public User update(User user) {
-        log.debug("Database query to the 'UPDATE' user parameters to: {}.", user);
         manager.merge(user);
         return user;
     }
 
+    @LogInvocation
     @Override
     public void delete(Long id) {
-        log.debug("Database query to the 'UPDATE' delete user by id: {}.", id);
         manager.remove(id);
     }
 
+    @LogInvocation
     @Override
     public Integer count() {
-        log.debug("Database query to the 'COUNT' all users.");
         return manager.createNativeQuery(COUNT_USERS, Integer.class).getFirstResult();
     }
 
+    @LogInvocation
     @Override
     public List<User> getByFirstName(String firstName) {
-        log.debug("Database query to the 'SELECT' by last name: {}.", firstName);
         return manager.createQuery(FIND_ALL_USERS_BY_FIRSTNAME, User.class)//
                 .setParameter("firstName", firstName).getResultList();
     }
 
+    @LogInvocation
     @Override
     public List<User> getByLastName(String lastName) {
-        log.debug("Database query to the 'SELECT' by last name: {}.", lastName);
         return manager.createQuery(FIND_ALL_USERS_BY_LASTNAME, User.class)//
                 .setParameter("lastName", lastName).getResultList();
     }
 
+    @LogInvocation
     @Override
     public User getByEmail(String email) {
-        log.debug("Database query to the 'SELECT' by email: {}.", email);
         return manager.createQuery(FIND_ALL_USERS_BY_EMAIL, User.class).setParameter("email", email).getSingleResult();
     }
 

@@ -1,9 +1,9 @@
 package app.repository.impl;
 
+import app.interceptors.LogInvocation;
 import app.repository.CourseRepository;
 import app.repository.entity.Course;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Log4j2
 @Repository
 @Transactional
 public class CourseRepositoryImpl implements CourseRepository {
@@ -22,50 +21,50 @@ public class CourseRepositoryImpl implements CourseRepository {
     @PersistenceContext
     private EntityManager manager;
 
+    @LogInvocation
     @Override
     public Course create(Course course) {
-        log.debug("Database query to the 'INSERT' new course: {}.", course);
         manager.persist(course);
         return course;
     }
 
+    @LogInvocation
     @Override
     public List<Course> getAll(int limit, int offset) {
-        log.debug("Database query to the 'SELECT' courses command (limit: {}), (offset: {})");
         return manager.createQuery(FIND_ALL_COURSES, Course.class)//
                 .setMaxResults(limit)//
                 .setFirstResult(offset)//
                 .getResultList();
     }
 
+    @LogInvocation
     @Override
     public Course getById(Long id) {
-        log.debug("Database query to the 'SELECT' course by id: {}.", id);
         return manager.find(Course.class, id);
     }
 
+    @LogInvocation
     @Override
     public Course update(Course course) {
-        log.debug("Database query to the 'UPDATE' course parameters to: {}.", course);
         manager.merge(course);
         return course;
     }
 
+    @LogInvocation
     @Override
     public void delete(Long id) {
-        log.debug("Database query to the 'UPDATE' delete course by id: {}.", id);
         manager.remove(id);
     }
 
+    @LogInvocation
     @Override
     public Integer count() {
-        log.debug("Database query to the 'COUNT' all courses.");
         return manager.createNativeQuery(COUNT_COURSES, Integer.class).getFirstResult();
     }
 
+    @LogInvocation
     @Override
     public Course getByName(String name) {
-        log.debug("Database query to the 'SELECT' by name: {}.", name);
         return manager.find(Course.class, name);
     }
 
