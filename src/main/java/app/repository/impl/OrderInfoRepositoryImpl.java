@@ -1,9 +1,9 @@
 package app.repository.impl;
 
+import app.interceptors.LogInvocation;
 import app.repository.OrderInfoRepository;
 import app.repository.entity.OrderInfo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Log4j2
 @Repository
 @Transactional
 public class OrderInfoRepositoryImpl implements OrderInfoRepository {
@@ -23,50 +22,50 @@ public class OrderInfoRepositoryImpl implements OrderInfoRepository {
     @PersistenceContext
     private EntityManager manager;
 
+    @LogInvocation
     @Override
     public OrderInfo create(OrderInfo orderInfo) {
-        log.debug("Database query to the 'INSERT' new order info: {}.", orderInfo);
         manager.persist(orderInfo);
         return orderInfo;
     }
 
+    @LogInvocation
     @Override
     public List<OrderInfo> getAll(int limit, int offset) {
-        log.debug("Database query to the 'SELECT' order infos (limit) command");
         return manager.createQuery(FIND_ALL_ORDER_INFOS, OrderInfo.class)//
                 .setMaxResults(limit)//
                 .setFirstResult(offset)//
                 .getResultList();
     }
 
+    @LogInvocation
     @Override
     public OrderInfo getById(Long id) {
-        log.debug("Database query to the 'SELECT' order info by id: {}.", id);
         return manager.find(OrderInfo.class, id);
     }
 
+    @LogInvocation
     @Override
     public OrderInfo update(OrderInfo orderInfos) {
-        log.debug("Database query to the 'UPDATE' order info parameters to: {}.", orderInfos);
         manager.merge(orderInfos);
         return orderInfos;
     }
 
+    @LogInvocation
     @Override
     public void delete(Long id) {
-        log.debug("Database query to the 'UPDATE' delete order info by id: {}.", id);
         manager.remove(id);
     }
 
+    @LogInvocation
     @Override
     public Integer count() {
-        log.debug("Database query to the 'COUNT' all order infos.");
         return manager.createNativeQuery(COUNT_ORDERS_INFOS, Integer.class).getFirstResult();
     }
 
+    @LogInvocation
     @Override
     public List<OrderInfo> getByOrderId(Long order_id) {
-        log.debug("Database query to the 'SELECT' order_infos by order id: {}.", order_id);
         return manager.createQuery(FIND_ALL_ORDER_INFOS_BY_ORDER_ID, OrderInfo.class)//
                 .setParameter("order_id", order_id).getResultList();
     }

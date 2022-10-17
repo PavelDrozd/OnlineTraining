@@ -1,5 +1,6 @@
 package app.service.impl;
 
+import app.interceptors.LogInvocation;
 import app.repository.UserRepository;
 import app.repository.entity.User;
 import app.exceptions.DaoException;
@@ -8,62 +9,57 @@ import app.service.UserService;
 import app.service.dto.UserDto;
 import app.service.util.DigestUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Log4j2
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    @LogInvocation
     @Override
     public UserDto create(UserDto userDto) {
         try {
-            log.debug("Service 'create' new userDto: {}.", userDto);
             checkCreateExistsByEmail(userDto);
             String hashedPassword = DigestUtil.INSTANCE.hash(userDto.getPassword());
             userDto.setPassword(hashedPassword);
             User user = userRepository.create(toUserEntity(userDto));
             return toUserDto(user);
         } catch (DaoException e) {
-            log.error("Service can't create 'user': {} , throw: {}", userDto, e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public List<UserDto> getAll(int limit, int offset) {
         try {
-            log.debug("Service 'getAll' command request.");
             return userRepository.getAll(limit, offset).stream().map(this::toUserDto).collect(Collectors.toList());
         } catch (DaoException e) {
-            log.error("Service can't get all 'users', throw: {}", e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public UserDto getById(Long id) {
         try {
-            log.debug("Service 'getById' id: {}.", id);
             if (userRepository.getById(id) == null) {
                 throw new RuntimeException("User with ID:" + id + " is null.");
             }
             return toUserDto(userRepository.getById(id));
         } catch (DaoException e) {
-            log.error("Service can't get 'user' by id: {} , throw: {}", id, e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public UserDto update(UserDto userDto) {
         try {
-            log.debug("Service 'update' userDto: {}.", userDto);
             User existing = userRepository.getByEmail(userDto.getEmail());
             if (existing != null && !existing.getId().equals(userDto.getId())) {
                 throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
@@ -71,60 +67,57 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.update(toUserEntity(userDto));
             return toUserDto(user);
         } catch (DaoException e) {
-            log.error("Service can't update 'user' to: {} , throw: {}", userDto, e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public void delete(Long id) {
-            log.debug("Service 'delete' by id: {}.", id);
-            userRepository.delete(id);
+        userRepository.delete(id);
     }
 
+    @LogInvocation
     @Override
     public Integer count() {
         try {
             return userRepository.count();
         } catch (DaoException e) {
-            log.error("Service can't count 'users', throw: {}", e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public List<UserDto> getByFirstName(String firstName) {
         try {
-            log.debug("Service 'getByLastName' lastName: {}.", firstName);
             return userRepository.getByLastName(firstName).stream().map(this::toUserDto).collect(Collectors.toList());
         } catch (DaoException e) {
-            log.error("Service can't get 'users' by firstName: {} , throw: {}", firstName, e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public List<UserDto> getByLastName(String lastName) {
         try {
-            log.debug("Service 'getByLastName' lastName: {}.", lastName);
             return userRepository.getByLastName(lastName).stream().map(this::toUserDto).collect(Collectors.toList());
         } catch (DaoException e) {
-            log.error("Service can't get 'users' by lastName: {} , throw: {}", lastName, e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public UserDto getByEmail(String email) {
         try {
-            log.debug("Service 'getByEmail' email: {}.", email);
             return toUserDto(userRepository.getByEmail(email));
         } catch (DaoException e) {
-            log.error("Service can't get 'user' by email: {} , throw: {}", email, e);
             throw new ServiceException(e);
         }
     }
 
+    @LogInvocation
     @Override
     public UserDto login(String email, String password) {
         try {
@@ -138,7 +131,6 @@ public class UserServiceImpl implements UserService {
             }
             return userDto;
         } catch (DaoException e) {
-            log.error("Service can't login 'user', throw: {}", e);
             throw new ServiceException(e);
         }
     }
