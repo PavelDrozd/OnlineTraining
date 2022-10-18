@@ -1,103 +1,74 @@
 package app.service.impl;
 
 import app.interceptors.LogInvocation;
-import app.repository.CourseRepository;
+import app.repository.CourseRep;
 import app.repository.entity.Course;
-import app.exceptions.DaoException;
 import app.exceptions.ServiceException;
 import app.service.CourseService;
 import app.service.dto.CourseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CourseServiceImpl implements CourseService {
-    private final CourseRepository courseRepository;
+    private final CourseRep courseRep;
 
     @LogInvocation
     @Override
     public CourseDto create(CourseDto courseDto) {
-        try {
-            Course existing = courseRepository.getByName(courseDto.getName());
-            if (existing != null) {
-                throw new RuntimeException("Course with name " + courseDto.getName() + " already exists.");
-            }
-            Course course = courseRepository.create(toCourseEntity(courseDto));
-            return toCourseDto(course);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
+        Optional<Course> existing = courseRep.findById(courseDto.getId());
+        if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
+            throw new ServiceException("Course with name " + courseDto.getName() + "already exists.");
         }
+        Course course = courseRep.save(toCourseEntity(courseDto));
+        return toCourseDto(course);
     }
 
     @LogInvocation
     @Override
-    public List<CourseDto> getAll(int limit, int offset) {
-        try {
-            return courseRepository.getAll(limit, offset).stream().map(this::toCourseDto).collect(Collectors.toList());
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+    public List<CourseDto> findAll(Pageable pageable) {
+        List<Course> courses = courseRep.findByDeletedFalse(pageable).stream().toList();
+        return courses.stream().map(this::toCourseDto).collect(Collectors.toList());
     }
 
     @LogInvocation
     @Override
-    public CourseDto getById(Long id) {
-        try {
-            if (courseRepository.getById(id) == null) {
-                return null;
-            }
-            return toCourseDto(courseRepository.getById(id));
-        } catch (DaoException e) {
-            throw new ServiceException(e);
+    public CourseDto findById(Long id) {
+        Optional<Course> course = courseRep.findByIdAndDeletedFalse(id);
+        if (course.isEmpty()) {
+            throw new ServiceException("Course with id: " + id + "doesn't exist");
         }
+        return toCourseDto(course.get());
     }
 
     @LogInvocation
     @Override
     public CourseDto update(CourseDto courseDto) {
-        try {
-            Course existing = courseRepository.getByName(courseDto.getName());
-            if (existing != null && !existing.getName().equals(courseDto.getName())) {
-                throw new RuntimeException("Course with name " + courseDto.getName() + "already exists.");
-            }
-            Course course = courseRepository.update(toCourseEntity(courseDto));
-            return toCourseDto(course);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
+        Optional<Course> existing = courseRep.findById(courseDto.getId());
+        if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
+            throw new ServiceException("Course with name " + courseDto.getName() + "already exists.");
         }
+        Course course = courseRep.save(toCourseEntity(courseDto));
+        return toCourseDto(course);
     }
 
     @LogInvocation
     @Override
     public void delete(Long id) {
-        courseRepository.delete(id);
+        Course course = courseRep.findById(id).orElseThrow(() -> new ServiceException("Course doesn't exist"));
+        course.setDeleted(false);
     }
 
     @LogInvocation
     @Override
-    public Integer count() {
-        try {
-            return courseRepository.count();
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @LogInvocation
-    @Override
-    public CourseDto getByName(String name) {
-        try {
-            if (courseRepository.getByName(name) == null) {
-                return null;
-            }
-            return toCourseDto(courseRepository.getByName(name));
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+    public Long count() {
+        return courseRep.count();
     }
 
     private Course toCourseEntity(CourseDto courseDto) {
