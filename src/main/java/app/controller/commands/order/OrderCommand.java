@@ -17,7 +17,7 @@ public class OrderCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         Long id = Long.parseLong(req.getParameter("id"));
-        OrderDto order = service.getById(id);
+        OrderDto order = service.findById(id);
         req.setAttribute("order", order);
         return ORDER_PAGE;
     }

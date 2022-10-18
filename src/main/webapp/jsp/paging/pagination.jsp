@@ -9,13 +9,13 @@
 <a class="btn btn-outline-success" href="controller?command=users&page=1">
     First
 </a>
-<a class="btn btn-outline-secondary"  href="controller?command=users&page=${requestScope.currentPage - 1}">
+<a class="btn btn-outline-secondary"  href="controller?command=users&page=${requestScope.currentPage}">
     Prev
 </a>
 
 <fmt:message key="msg.pag.page"/> ${requestScope.currentPage} <fmt:message key="msg.pag.outof.l"/> ${requestScope.totalPages}
 
-<a class="btn btn-outline-secondary" href="controller?command=users&page=${requestScope.currentPage + 1}">
+<a class="btn btn-outline-secondary" href="controller?command=users&page=${requestScope.currentPage}">
     Next
 </a>
 <a class="btn btn-outline-success" href="controller?command=users&page=${requestScope.totalPages}">
