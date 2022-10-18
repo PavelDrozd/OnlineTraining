@@ -3,6 +3,7 @@ package app.controller;
 import app.controller.commands.Command;
 import app.controller.commands.CommandRegister;
 import app.exceptions.ControllerException;
+import app.interceptors.LogInvocation;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,18 +17,7 @@ import static app.controller.commands.PagesConstant.ERROR_PAGE;
 import static app.controller.commands.PagesConstant.REDIRECT;
 
 @WebServlet("/controller")
-@Log4j2
 public class Controller extends HttpServlet {
-
-    @Override
-    public void init() {
-        log.info("SERVLET INIT");
-    }
-
-    @Override
-    public void destroy() {
-        log.info("SERVLET DESTROY");
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -39,6 +29,7 @@ public class Controller extends HttpServlet {
         process(req, resp);
     }
 
+    @LogInvocation
     private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String command = req.getParameter("command");
@@ -46,7 +37,6 @@ public class Controller extends HttpServlet {
             Command commandInstance = ContextListener.context.getBean(commandDefinition);
             sendResponse(req, resp, commandInstance);
         } catch (Exception e) {
-            log.error(e);
             toErrorPage(req, resp);
         }
     }
@@ -60,11 +50,11 @@ public class Controller extends HttpServlet {
         }
     }
 
+    @LogInvocation
     private void toErrorPage(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
         } catch (ServletException | IOException ex) {
-            log.error("Can't execute method forward to ERROR_PAGE", ex);
             throw new ControllerException(ex);
         }
     }

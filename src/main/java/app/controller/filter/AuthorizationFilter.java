@@ -1,6 +1,7 @@
 package app.controller.filter;
 
 
+import app.interceptors.LogInvocation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -14,6 +15,7 @@ import java.io.IOException;
 @WebFilter("/*")
 public class AuthorizationFilter extends HttpFilter {
 
+    @LogInvocation
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         String command = req.getParameter("command");

@@ -1,6 +1,7 @@
 package app.controller.filter;
 
 import app.controller.commands.CommandRegister;
+import app.interceptors.LogInvocation;
 import app.service.dto.UserDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,6 +18,7 @@ import static app.controller.commands.PagesConstant.INDEX_PAGE;
 @WebFilter("/*")
 public class UserRoleFilter extends HttpFilter {
 
+    @LogInvocation
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         String command = req.getParameter("command");
