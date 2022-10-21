@@ -41,6 +41,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @Convert(converter = RoleConverter.class)
     @Column(name = "role_id")
     private Role role;

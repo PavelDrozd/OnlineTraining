@@ -38,6 +38,9 @@ public class OrderInfo {
     @Column(name = "course_price")
     private BigDecimal coursePrice;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

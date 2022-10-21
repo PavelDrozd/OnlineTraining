@@ -22,8 +22,6 @@ import app.controller.commands.user.session.LoginCommand;
 import app.controller.commands.user.session.LoginFormCommand;
 import app.controller.commands.user.session.LogoutCommand;
 
-
-
 public enum CommandRegister {
     //ERROR COMMANDS
     ERROR(ErrorCommand.class, SecurityLevel.USER),
@@ -54,7 +52,7 @@ public enum CommandRegister {
 
     //ORDERS COMMAND
     ORDER(OrderCommand.class, SecurityLevel.USER),
-    ORDERS(OrdersCommand.class, SecurityLevel.ADMIN);//
+    ORDERS(OrdersCommand.class, SecurityLevel.ADMIN)//
     ;//
 
     private final Class<? extends Command> commands;

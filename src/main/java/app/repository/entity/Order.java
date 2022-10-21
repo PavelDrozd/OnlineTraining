@@ -43,6 +43,9 @@ public class Order {
     @Column(name = "total_cost")
     private BigDecimal totalCost;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @OneToMany(cascade = CascadeType.REFRESH)
     private List<OrderInfo> details;
 

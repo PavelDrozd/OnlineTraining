@@ -17,7 +17,7 @@ public class CourseCommand implements Command {
     @Override
     public String execute(HttpServletRequest req) {
         Long id = Long.parseLong(req.getParameter("id"));
-        CourseDto course = service.getById(id);
+        CourseDto course = service.findById(id);
         req.setAttribute("course", course);
         return COURSE_PAGE;
     }

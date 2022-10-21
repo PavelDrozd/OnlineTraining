@@ -1,101 +1,81 @@
 package app.service.impl;
 
 import app.interceptors.LogInvocation;
-import app.repository.CourseRepository;
-import app.repository.OrderRepository;
+import app.repository.CourseRep;
+import app.repository.OrderRep;
 import app.repository.entity.Course;
 import app.repository.entity.Order;
 import app.repository.entity.OrderInfo;
 import app.repository.entity.User;
-import app.exceptions.DaoException;
 import app.exceptions.ServiceException;
 import app.service.OrderService;
 import app.service.dto.OrderDto;
 import app.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-    private final CourseRepository courseRepository;
+    private final OrderRep orderRep;
+    private final CourseRep courseRep;
 
     @LogInvocation
     @Override
     public OrderDto create(OrderDto orderDto) {
-        try {
-            Order order = orderRepository.create(toOrderEntity(orderDto));
-            return toOrderDto(order);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+        Order order = orderRep.save(toOrderEntity(orderDto));
+        return toOrderDto(order);
     }
 
     @LogInvocation
     @Override
-    public List<OrderDto> getAll(int limit, int offset) {
-        try {
-            return orderRepository.getAll(limit, offset).stream().map(this::toOrderDto).collect(Collectors.toList());
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+    public List<OrderDto> findAll(Pageable pageable) {
+        List<Order> orders = orderRep.findByDeletedFalse(pageable).stream().toList();
+        return orders.stream().map(this::toOrderDto).collect(Collectors.toList());
     }
 
     @LogInvocation
     @Override
-    public OrderDto getById(Long id) {
-        try {
-            if (orderRepository.getById(id) == null) {
-                return null;
-            }
-            return toOrderDto(orderRepository.getById(id));
-        } catch (DaoException e) {
-            throw new ServiceException(e);
+    public OrderDto findById(Long id) {
+        Optional<Order> order = orderRep.findByIdAndDeletedFalse(id);
+        if (order.isEmpty()) {
+            throw new ServiceException("Order with id: " + id + "doesn't exist");
         }
+        return toOrderDto(order.get());
     }
 
     @LogInvocation
     @Override
     public OrderDto update(OrderDto orderDto) {
-        try {
-            Order order = orderRepository.update(toOrderEntity(orderDto));
-            return toOrderDto(order);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+        Order order = orderRep.save(toOrderEntity(orderDto));
+        return toOrderDto(order);
     }
 
     @LogInvocation
     @Override
     public void delete(Long id) {
-        orderRepository.delete(id);
+        Order order = orderRep.findById(id).orElseThrow(() -> new ServiceException("Order doesn't exist"));
+        order.setDeleted(false);
     }
 
     @LogInvocation
     @Override
-    public Integer count() {
-        try {
-            return orderRepository.count();
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+    public Long count() {
+        return orderRep.count();
     }
 
     @LogInvocation
     @Override
     public OrderDto processCart(Map<Long, Integer> cart, UserDto userDto) {
-        try {
-            return createOrderEntity(cart, userDto);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+        return createOrderEntity(cart, userDto);
     }
 
     private OrderDto createOrderEntity(Map<Long, Integer> cart, UserDto userDto) {
@@ -105,9 +85,9 @@ public class OrderServiceImpl implements OrderService {
         List<OrderInfo> details = new ArrayList<>();
         cart.forEach((courseId, quantity) -> {
             OrderInfo orderInfo = new OrderInfo();
-            Course course = courseRepository.getById(courseId);
-            orderInfo.setCourse(course);
-            orderInfo.setCoursePrice(course.getCost());
+            Optional<Course> course = courseRep.findById(courseId);
+            orderInfo.setCourse(course.orElseThrow(() -> new ServiceException("Course doesn't exist")));
+            orderInfo.setCoursePrice(course.get().getCost());
             details.add(orderInfo);
         });
         orderDto.setDetails(details);
@@ -128,7 +108,8 @@ public class OrderServiceImpl implements OrderService {
     private Order toOrderEntity(OrderDto orderDto) {
         Order order = new Order();
         setOrderId(orderDto, order);
-        order.setUser(orderRepository.getById(orderDto.getUser().getId()).getUser());
+        Optional<Order> orderByUser = orderRep.findById(orderDto.getUser().getId());
+        order.setUser(orderByUser.orElseThrow(() -> new ServiceException("OrderByUser doesn't exist")).getUser());
         setOrderStatus(orderDto, order);
         order.setTotalCost(orderDto.getTotalCost());
         order.setDetails(orderDto.getDetails());

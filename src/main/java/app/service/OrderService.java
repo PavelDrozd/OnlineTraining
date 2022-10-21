@@ -5,7 +5,7 @@ import app.service.dto.UserDto;
 
 import java.util.Map;
 
-public interface OrderService extends AbstractService<Long, OrderDto> {
+public interface OrderService extends AbstractService<OrderDto, Long> {
 
     OrderDto processCart(Map<Long, Integer> cart, UserDto userDto);
 }
