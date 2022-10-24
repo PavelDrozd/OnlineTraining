@@ -32,7 +32,7 @@ public class OrderInfo {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @Column(name = "oder_id")
+    @Column(name = "order_id")
     private Long orderId;
 
     @Column(name = "course_price")

@@ -112,7 +112,6 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(orderByUser.orElseThrow(() -> new ServiceException("OrderByUser doesn't exist")).getUser());
         setOrderStatus(orderDto, order);
         order.setTotalCost(orderDto.getTotalCost());
-        order.setDetails(orderDto.getDetails());
         return order;
     }
 
@@ -135,7 +134,6 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setUser(toUserDto(order.getUser()));
         orderDto.setStatus(OrderDto.StatusDto.values()[order.getStatus().ordinal()]);
         orderDto.setTotalCost(order.getTotalCost());
-        orderDto.setDetails(order.getDetails());
         return orderDto;
     }
 
