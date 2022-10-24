@@ -10,14 +10,14 @@
     <head>
         <title>Edit email</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script defer src="js/script.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script defer src="/js/script.js"></script>
     </head>
     <body>
         <jsp:include page="../../navbar/navbar.jsp"/>
         <div class="container text-left my-2">
             <h1><fmt:message key="msg.user.edit"/><fmt:message key="msg.user.email.l"/></h1>
-            <form method="post" action="controller">
+            <form method="post" action="/edit_user_email">
                 <p>
                 <input name="command" type="hidden" value="edit_email"/>
                 <label for="email-input"><fmt:message key="msg.user.email"/>: </label>

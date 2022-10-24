@@ -10,12 +10,13 @@
     <head>
         <title>Error</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script defer src="js/script.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script defer src="/js/script.js"></script>
     </head>
     <body>
         <jsp:include page="navbar/navbar.jsp"/>
-
-        <h1> <fmt:message key="msg.error.somethingwentwrong"/> </h1>
+        <h3><c:out value="${requestScope.error}"/></h3>
+        <h3><c:out value="${requestScope.status}"/></h3>
+        <h3><c:out value="${requestScope.reason}"/></h3>
     </body>
 </html>

@@ -10,15 +10,15 @@
     <head>
         <title>Register new user</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script defer src="js/script.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script defer src="/js/script.js"></script>
     </head>
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="container text-left my-2">
             <h1> <fmt:message key="msg.nav.register"/> </h1>
             <p><c:out value="${requestScope.message}"/></p>
-                <form method="post" action="controller">
+                <form method="post" action="/register_new_user">
                     <p>
                     <input name="command" type="hidden" value="create_user"/>
                     <label for="firstName-input"><fmt:message key="msg.user.firstname"/>: </label>
@@ -41,7 +41,7 @@
                     <input id="password-input" name="password" type="password" minlength="4"/>
                     </p>
                     <p>
-                    <input type="submit" value=<fmt:message key="msg.user.register"/>/>
+                    <input type="submit" value=<fmt:message key="msg.nav.register"/>
                     </p>
                 </form>
         </div>

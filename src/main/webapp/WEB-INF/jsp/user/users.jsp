@@ -10,8 +10,8 @@
     <head>
         <title>Users</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script defer src="js/script.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script defer src="/js/script.js"></script>
     </head>
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
@@ -31,7 +31,7 @@
                         <td><c:out value="${user.firstName}"/></td>
                         <td><c:out value="${user.lastName}"/></td>
                         <td><c:out value="${user.age}"/></td>
-                        <td><a href="controller?command=user&id=${user.id}"><c:out value="${user.email}"/></a></td>
+                        <td><a href="/user/${user.id}"><c:out value="${user.email}"/></a></td>
                     </tr>
                 </c:forEach>
             </table>
