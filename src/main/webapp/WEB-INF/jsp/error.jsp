@@ -8,17 +8,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OnlineTraining</title>
+        <title>Error</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <script defer src="/js/script.js"></script>
     </head>
     <body>
-        <jsp:include page="/WEB-INF/jsp/navbar/navbar.jsp"/>
-        <div class="container text-center my-2">
-
-            <p><c:out value="${requestScope.message}"/></p>
-
-        </div>
+        <jsp:include page="navbar/navbar.jsp"/>
+        <h3><c:out value="${requestScope.error}"/></h3>
+        <h3><c:out value="${requestScope.status}"/></h3>
+        <h3><c:out value="${requestScope.reason}"/></h3>
     </body>
 </html>
