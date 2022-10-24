@@ -25,8 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         checkCreateExistsByEmail(userDto);
-        String hashedPassword = digestUtil.hash(userDto.getPassword());
-        userDto.setPassword(hashedPassword);
+        userDto.setPassword(userDto.getPassword());
         User user = userRep.save(toUserEntity(userDto));
         return toUserDto(user);
     }
@@ -164,7 +163,7 @@ public class UserServiceImpl implements UserService {
     private void checkCreateExistsByEmail(UserDto userDto){
         User existing = userRep.getByEmail(userDto.getEmail());
         if (existing != null) {
-            throw new RuntimeException("User with Email " + userDto.getEmail() + "already exists.");
+            throw new ServiceException("User with Email " + userDto.getEmail() + "already exists.");
         }
     }
 
