@@ -26,7 +26,7 @@ create TABLE IF NOT EXISTS  courses (
 create TABLE IF NOT EXISTS  orders (
 	id BIGSERIAL PRIMARY KEY,
 	user_id bigint NOT NULL,
-	status_id bigint NOT NULL REFERENCES order_status,
+	status_id int4 NOT NULL REFERENCES order_status,
 	total_cost NUMERIC(5,2) NOT NULL,
 	deleted boolean NOT NULL DEFAULT FALSE
 );
@@ -48,7 +48,7 @@ create TABLE IF NOT EXISTS  users (
     id BIGSERIAL PRIMARY KEY,
     firstName varchar (15) NOT NULL,
     lastName varchar (15) NOT NULL,
-    "age" SMALLINT,
+    "age" int4,
     email varchar (30) NOT NULL,
     password varchar (50) NOT NULL,
     role_id int4 NOT NULL REFERENCES roles,
