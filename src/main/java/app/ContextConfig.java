@@ -8,6 +8,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -17,7 +22,23 @@ import javax.persistence.Persistence;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 @EnableJpaRepositories
-public class ContextConfig {
+@EnableWebMvc
+public class ContextConfig implements WebMvcConfigurer {
+
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/jsp/");
+        viewResolver.setSuffix(".jsp");
+        viewResolver.setViewClass(JstlView.class);
+        return viewResolver;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("css/**", "images/**", "js/**")
+                .addResourceLocations("classpath:/static/css/", "classpath:/static/images/", "classpath:/static/js/");
+    }
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -25,7 +46,7 @@ public class ContextConfig {
     }
 
     @Bean
-    public TransactionManager transactionManager () {
+    public TransactionManager transactionManager() {
         return new JpaTransactionManager(entityManagerFactory());
     }
 }
