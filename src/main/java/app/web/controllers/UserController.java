@@ -1,4 +1,4 @@
-package app.controllers;
+package app.web.controllers;
 
 import app.service.UserService;
 import app.service.dto.UserDto;
