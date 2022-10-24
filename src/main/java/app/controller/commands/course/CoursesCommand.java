@@ -4,7 +4,7 @@ import app.controller.commands.Command;
 import app.service.CourseService;
 import app.service.dto.CourseDto;
 import app.service.util.PaginationUtil;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

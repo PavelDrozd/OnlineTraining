@@ -4,13 +4,14 @@ import app.controller.commands.Command;
 import app.service.UserService;
 import app.service.dto.UserDto;
 import app.service.util.PaginationUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static app.controller.commands.PagesConstant.USERS_PAGE;
@@ -22,6 +23,7 @@ public class UsersCommand implements Command {
     private final PaginationUtil paginationUtil;
 
     @Override
+    @GetMapping("/user")
     public String execute(HttpServletRequest req) {
         int limit = paginationUtil.getPageSize(req.getParameter("limit"));
         long totalPages = paginationUtil.getTotalPages(limit, userService.count());

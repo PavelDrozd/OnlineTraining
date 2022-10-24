@@ -3,7 +3,7 @@ package app.controller.commands.user;
 import app.controller.commands.Command;
 import app.service.UserService;
 import app.service.dto.UserDto;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 

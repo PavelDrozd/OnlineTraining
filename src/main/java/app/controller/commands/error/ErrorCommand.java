@@ -1,7 +1,7 @@
 package app.controller.commands.error;
 
 import app.controller.commands.Command;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 
 import static app.controller.commands.PagesConstant.ERROR_PAGE;

@@ -3,7 +3,7 @@ package app.controller.commands.course;
 import app.controller.commands.Command;
 import app.service.CourseService;
 import app.service.dto.CourseDto;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 

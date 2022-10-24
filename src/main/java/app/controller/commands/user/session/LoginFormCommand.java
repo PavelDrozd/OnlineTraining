@@ -1,7 +1,7 @@
 package app.controller.commands.user.session;
 
 import app.controller.commands.Command;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 
 import static app.controller.commands.PagesConstant.LOGIN_FORM_PAGE;

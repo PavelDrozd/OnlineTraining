@@ -2,8 +2,8 @@ package app.controller.commands.user.profile;
 
 import app.controller.commands.Command;
 import app.service.dto.UserDto;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 
 import static app.controller.commands.PagesConstant.LOGIN_FORM_PAGE;
