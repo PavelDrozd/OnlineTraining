@@ -1,4 +1,4 @@
-package app.controllers;
+package app.web.controllers;
 
 import app.service.UserService;
 import app.service.dto.UserDto;
@@ -34,7 +34,7 @@ public class UserController {
         UserDto user = userService.login(userLogin.getEmail(), userLogin.getPassword());
         session.setAttribute("user", user);
         model.addAttribute("message", "Succesfully login!");
-        return "main";
+        return "index";
     }
 
     @GetMapping("/logout")
@@ -43,7 +43,7 @@ public class UserController {
         String lang = (String) session.getAttribute("lang");
         session.invalidate();
         req.getSession().setAttribute("lang", lang);
-        return "main";
+        return "index";
 
     }
 
@@ -78,7 +78,7 @@ public class UserController {
         UserDto created = userService.create(user);
         model.addAttribute("user", created);
         model.addAttribute("message", "New user was created!");
-        return "main";
+        return "index";
     }
 
     @GetMapping("/profile")

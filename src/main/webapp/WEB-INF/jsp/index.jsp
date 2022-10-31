@@ -14,7 +14,7 @@
         <script defer src="/js/script.js"></script>
     </head>
     <body>
-        <jsp:include page="/WEB-INF/jsp/navbar/navbar.jsp"/>
+        <jsp:include page="navbar/navbar.jsp"/>
         <div class="container text-center my-2">
 
             <p><c:out value="${requestScope.message}"/></p>

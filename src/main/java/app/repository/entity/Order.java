@@ -46,9 +46,6 @@ public class Order {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @OneToMany(cascade = CascadeType.REFRESH)
-    private List<OrderInfo> details;
-
     public enum Status {
         UNPAID, CANCELLED, PAYED,
     }
@@ -73,7 +70,6 @@ public class Order {
                 ", user=" + user +
                 ", status=" + status +
                 ", totalCost=" + totalCost +
-                ", details=" + details +
                 '}';
     }
 }

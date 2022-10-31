@@ -1,4 +1,4 @@
-package app.controllers;
+package app.web.controllers;
 
 import app.exceptions.ServiceException;
 import org.springframework.ui.Model;
