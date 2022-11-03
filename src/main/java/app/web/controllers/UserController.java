@@ -1,7 +1,7 @@
 package app.web.controllers;
 
 import app.service.UserService;
-import app.service.dto.UserDto;
+import app.service.dto.user.UserDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +31,7 @@ public class UserController {
 
     @RequestMapping(value = "/login_user", method = RequestMethod.POST)
     public String login(UserDto userLogin, HttpSession session, Model model) {
-        UserDto user = userService.login(userLogin.getEmail(), userLogin.getPassword());
+        UserDto user = userService.login(userLogin.getPersonalInfo().getEmail(), userLogin.getPassword());
         session.setAttribute("user", user);
         model.addAttribute("message", "Succesfully login!");
         return "index";
@@ -99,8 +99,8 @@ public class UserController {
     @RequestMapping(value = "/edit_user_name", method = RequestMethod.POST)
     public String editName(HttpSession session, UserDto user, Model model) {
         UserDto userForUpdate = (UserDto) session.getAttribute("user");
-        userForUpdate.setFirstName(user.getFirstName());
-        userForUpdate.setLastName(user.getLastName());
+        userForUpdate.getPersonalInfo().setFirstName(user.getPersonalInfo().getFirstName());
+        userForUpdate.getPersonalInfo().setLastName(user.getPersonalInfo().getLastName());
         UserDto edited = userService.update(userForUpdate);
         model.addAttribute("user", edited);
         model.addAttribute("message", "User name has been changed.");
@@ -115,7 +115,7 @@ public class UserController {
     @RequestMapping(value = "/edit_user_email", method = RequestMethod.POST)
     public String editEmail(HttpSession session, UserDto user, Model model) {
         UserDto userForUpdate = (UserDto) session.getAttribute("user");
-        userForUpdate.setEmail(user.getEmail());
+        userForUpdate.getPersonalInfo().setEmail(user.getPersonalInfo().getEmail());
         UserDto edited = userService.update(userForUpdate);
         model.addAttribute("user", edited);
         model.addAttribute("message", "Email has been changed.");
@@ -136,21 +136,5 @@ public class UserController {
         model.addAttribute("message", "User name has been changed.");
         return "user/profile/profile";
     }
-
-    @GetMapping("/edit_age")
-    public String editAgeForm() {
-        return "user/edit/editAgeForm";
-    }
-
-    @RequestMapping(value = "/edit_user_age", method = RequestMethod.POST)
-    public String editAge(HttpSession session, UserDto user, Model model) {
-        UserDto userForUpdate = (UserDto) session.getAttribute("user");
-        userForUpdate.setAge(user.getAge());
-        UserDto edited = userService.update(userForUpdate);
-        model.addAttribute("user", edited);
-        model.addAttribute("message", "The age has been changed.");
-        return "user/profile/profile";
-    }
-
 
 }
