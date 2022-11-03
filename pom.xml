@@ -23,6 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
         <jstl.version>1.2</jstl.version>
+        <model.mapper.version>3.1.0</model.mapper.version>
     </properties>
 
     <dependencies>
@@ -50,9 +51,18 @@
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${model.mapper.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
