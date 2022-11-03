@@ -1,11 +1,7 @@
 package app.service;
 
-import app.service.dto.OrderDto;
-import app.service.dto.UserDto;
-
-import java.util.Map;
+import app.service.dto.order.OrderDto;
 
 public interface OrderService extends AbstractService<OrderDto, Long> {
 
-    OrderDto processCart(Map<Long, Integer> cart, UserDto userDto);
 }

@@ -1,11 +1,12 @@
 package app.service.impl;
 
+import app.exceptions.ServiceException;
 import app.interceptors.LogInvocation;
 import app.repository.UserRep;
-import app.repository.entity.User;
-import app.exceptions.ServiceException;
+import app.repository.entity.user.User;
 import app.service.UserService;
-import app.service.dto.UserDto;
+import app.service.converters.EntityDtoMapper;
+import app.service.dto.user.UserDto;
 import app.service.util.DigestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,42 +21,42 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRep userRep;
     private final DigestUtil digestUtil;
+    private final EntityDtoMapper mapper;
 
     @LogInvocation
     @Override
     public UserDto create(UserDto userDto) {
-        checkCreateExistsByEmail(userDto);
         userDto.setPassword(userDto.getPassword());
-        User user = userRep.save(toUserEntity(userDto));
-        return toUserDto(user);
+        User user = userRep.save(mapper.mapToUser(userDto));
+        return mapper.mapToUserDto(user);
     }
 
     @LogInvocation
     @Override
     public List<UserDto> findAll(Pageable pageable) {
-        List<User> users = userRep.findByDeletedFalse(pageable).stream().toList();
-        return users.stream().map(this::toUserDto).collect(Collectors.toList());
+        List<User> users = userRep.findAll(pageable).stream().toList();
+        return users.stream().map(mapper::mapToUserDto).collect(Collectors.toList());
     }
 
     @LogInvocation
     @Override
     public UserDto findById(Long id) {
-        Optional<User> user = userRep.findByIdAndDeletedFalse(id);
+        Optional<User> user = userRep.findById(id);
         if (user.isEmpty()) {
             throw new ServiceException("User with id " + id + " doesn't exist");
         }
-        return toUserDto(user.get());
+        return mapper.mapToUserDto(user.get());
     }
 
     @LogInvocation
     @Override
     public UserDto update(UserDto userDto) {
         Optional<User> existing = userRep.findById(userDto.getId());
-        if (existing.isPresent() && existing.get().getEmail().equals(userDto.getEmail())) {
-            throw new ServiceException("User with email " + userDto.getEmail() + "already exists.");
+        if (existing.isPresent()) {
+            throw new ServiceException("User with email " + userDto.getPersonalInfo().getEmail() + "already exists.");
         }
-        User user = userRep.save(toUserEntity(userDto));
-        return toUserDto(user);
+        User user = userRep.save(mapper.mapToUser(userDto));
+        return mapper.mapToUserDto(user);
     }
 
     @LogInvocation
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @LogInvocation
     @Override
     public UserDto findByEmail(String email) {
-        return toUserDto(userRep.getByEmail(email));
+        return null;
     }
 
     @LogInvocation
@@ -89,82 +90,6 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Incorrect email or password");
         }
         return userDto;
-    }
-
-    private User toUserEntity(UserDto userDto) {
-        User user = new User();
-        setUserId(userDto, user);
-        setUserFirstName(userDto, user);
-        setUserLastName(userDto, user);
-        setUserAge(userDto, user);
-        setUserEmail(userDto, user);
-        setUserPassword(userDto, user);
-        setUserRole(userDto, user);
-        return user;
-    }
-
-    private void setUserId(UserDto userDto, User user) {
-        if (userDto.getId() != null) {
-            user.setId(userDto.getId());
-        }
-    }
-
-    private void setUserFirstName(UserDto userDto, User user) {
-        if (userDto.getFirstName() != null) {
-            user.setFirstName(userDto.getFirstName());
-        }
-    }
-
-    private void setUserLastName(UserDto userDto, User user) {
-        if (userDto.getLastName() != null) {
-            user.setLastName(userDto.getLastName());
-        }
-    }
-
-    private void setUserAge(UserDto userDto, User user) {
-        if (userDto.getAge() != null) {
-            user.setAge(userDto.getAge());
-        }
-    }
-
-    private void setUserEmail(UserDto userDto, User user) {
-        if (userDto.getEmail() != null) {
-            user.setEmail(userDto.getEmail());
-        }
-    }
-
-    private void setUserPassword(UserDto userDto, User user) {
-        if (userDto.getPassword() != null) {
-            String hashedPassword = digestUtil.hash(userDto.getPassword());
-            user.setPassword(hashedPassword);
-        }
-    }
-
-    private void setUserRole(UserDto userDto, User user) {
-        if (userDto.getRoleDto() == null) {
-            userDto.setRoleDto(UserDto.RoleDto.USER);
-        }
-        user.setRole(User.Role.valueOf(userDto.getRoleDto().toString()));
-    }
-
-
-    private UserDto toUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setAge(user.getAge());
-        userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
-        userDto.setRoleDto(UserDto.RoleDto.valueOf(user.getRole().toString()));
-        return userDto;
-    }
-
-    private void checkCreateExistsByEmail(UserDto userDto){
-        User existing = userRep.getByEmail(userDto.getEmail());
-        if (existing != null) {
-            throw new ServiceException("User with Email " + userDto.getEmail() + "already exists.");
-        }
     }
 
 }
