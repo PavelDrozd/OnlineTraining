@@ -1,23 +1,28 @@
-package app.repository.entity;
+package app.repository.entity.user;
 
 import app.repository.entity.converters.RoleConverter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "users")
 public class User {
@@ -26,30 +31,30 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstname")
-    private String firstName;
-
-    @Column(name = "lastname")
-    private String lastName;
-
-    @Column(name = "age")
-    private Integer age;
-
-    @Column(name = "email")
-    private String email;
+    @Column(name = "login")
+    private String login;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "deleted")
-    private boolean deleted;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "personal_info_id")
+    private PersonalInfo personalInfo;
 
     @Convert(converter = RoleConverter.class)
     @Column(name = "role_id")
     private Role role;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     public enum Role {
-        USER, STUDENT, TEACHER, ADMIN
+        USER, STUDENT, TUTOR, ADMIN, SUPERADMIN
+    }
+
+    @ToString.Include(name = "password")
+    public String getFakePassword() {
+        return "[PROTECTED]";
     }
 
     @Override
@@ -65,15 +70,4 @@ public class User {
         return getClass().hashCode();
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }

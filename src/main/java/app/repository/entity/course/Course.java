@@ -1,8 +1,9 @@
-package app.repository.entity;
+package app.repository.entity.course;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "courses")
 public class Course {
@@ -28,8 +30,14 @@ public class Course {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "course_info")
+    private String courseInfo;
+
     @Column(name = "cost")
     private BigDecimal cost;
+
+    @Column(name = "discount")
+    private BigDecimal discount;
 
     @Column(name = "duration_days")
     private Integer durationDays;
@@ -50,13 +58,4 @@ public class Course {
         return getClass().hashCode();
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", cost=" + cost +
-                ", durationDays=" + durationDays +
-                '}';
-    }
 }
