@@ -1,6 +1,6 @@
 package app.service;
 
-import app.service.dto.UserDto;
+import app.service.dto.user.UserDto;
 
 public interface UserService extends AbstractService<UserDto, Long> {
 

@@ -1,7 +1,7 @@
 package app.web.controllers;
 
 import app.service.OrderService;
-import app.service.dto.OrderDto;
+import app.service.dto.order.OrderDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

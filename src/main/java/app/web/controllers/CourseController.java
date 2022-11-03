@@ -1,7 +1,7 @@
 package app.web.controllers;
 
 import app.service.CourseService;
-import app.service.dto.CourseDto;
+import app.service.dto.course.CourseDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
