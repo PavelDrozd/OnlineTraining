@@ -4,6 +4,7 @@ import app.service.UserService;
 import app.service.dto.user.UserDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -61,7 +61,7 @@ public class UserController {
         int pageNumber = paginationUtil.getPage(page, totalPages);
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(pageNumber - 1, pageLimit, sort);
-        List<UserDto> users = userService.findAll(pageable);
+        Page<UserDto> users = userService.findAll(pageable);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("users", users);
