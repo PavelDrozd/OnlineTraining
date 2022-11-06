@@ -4,7 +4,6 @@ import app.service.OrderService;
 import app.service.dto.order.OrderDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class OrdersController {
         int pageNumber = paginationUtil.getPage(page, totalPages);
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(pageNumber - 1, pageLimit, sort);
-        Page<OrderDto> orders = orderService.findAll(pageable);
+        List<OrderDto> orders = orderService.findAll(pageable).toList();
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("orders", orders);
