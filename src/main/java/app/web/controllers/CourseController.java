@@ -1,7 +1,7 @@
 package app.web.controllers;
 
 import app.service.CourseService;
-import app.service.dto.CourseDto;
+import app.service.dto.course.CourseDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +36,7 @@ public class CourseController {
         int pageNumber = paginationUtil.getPage(page, totalPages);
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(pageNumber - 1, pageLimit, sort);
-        List<CourseDto> courses = courseService.findAll(pageable);
+        List<CourseDto> courses = courseService.findAll(pageable).toList();
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("courses", courses);

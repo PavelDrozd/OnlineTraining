@@ -17,13 +17,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/course/list"><fmt:message key="msg.nav.courses"/></a>
                 </li>
-
-
-                <c:if test="${sessionScope.user.roleDto.toString() == 'ADMIN'}">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user/list"><fmt:message key="msg.nav.users"/></a>
-                    </li>
-                </c:if>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/list"><fmt:message key="msg.nav.users"/></a>
+                </li>
 
                 <c:if test="${sessionScope.user != null}">
                     <li class="nav-item">

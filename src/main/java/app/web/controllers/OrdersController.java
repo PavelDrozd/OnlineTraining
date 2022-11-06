@@ -1,7 +1,7 @@
 package app.web.controllers;
 
 import app.service.OrderService;
-import app.service.dto.OrderDto;
+import app.service.dto.order.OrderDto;
 import app.service.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +36,7 @@ public class OrdersController {
         int pageNumber = paginationUtil.getPage(page, totalPages);
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(pageNumber - 1, pageLimit, sort);
-        List<OrderDto> orders = orderService.findAll(pageable);
+        List<OrderDto> orders = orderService.findAll(pageable).toList();
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("orders", orders);

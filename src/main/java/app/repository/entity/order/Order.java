@@ -1,29 +1,32 @@
-package app.repository.entity;
+package app.repository.entity.order;
 
+import app.repository.entity.converters.StatusConverter;
+import app.repository.entity.course.Course;
+import app.repository.entity.user.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "orders")
 public class Order {
@@ -32,19 +35,20 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = StatusConverter.class)
     @Column(name = "status_id")
     private Status status;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     @Column(name = "total_cost")
     private BigDecimal totalCost;
-
-    @Column(name = "deleted")
-    private boolean deleted;
 
     public enum Status {
         UNPAID, CANCELLED, PAYED,
@@ -63,13 +67,4 @@ public class Order {
         return getClass().hashCode();
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", user=" + user +
-                ", status=" + status +
-                ", totalCost=" + totalCost +
-                '}';
-    }
 }
