@@ -8,12 +8,11 @@ import app.service.OrderService;
 import app.service.converters.EntityDtoMapper;
 import app.service.dto.order.OrderDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,9 +29,8 @@ public class OrderServiceImpl implements OrderService {
 
     @LogInvocation
     @Override
-    public List<OrderDto> findAll(Pageable pageable) {
-        List<Order> orders = orderRep.findAll(pageable).stream().toList();
-        return orders.stream().map(mapper::mapToOrderDto).collect(Collectors.toList());
+    public Page<OrderDto> findAll(Pageable pageable) {
+        return orderRep.findAll(pageable).map(mapper::mapToOrderDto);
     }
 
     @LogInvocation
@@ -55,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @LogInvocation
     @Override
     public void delete(Long id) {
-        Order order = orderRep.findById(id).orElseThrow(() -> new ServiceException("Order doesn't exist"));
+        orderRep.deleteById(id);
     }
 
     @LogInvocation

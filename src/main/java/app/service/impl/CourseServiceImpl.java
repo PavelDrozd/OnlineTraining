@@ -8,12 +8,11 @@ import app.service.CourseService;
 import app.service.converters.EntityDtoMapper;
 import app.service.dto.course.CourseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,9 +33,8 @@ public class CourseServiceImpl implements CourseService {
 
     @LogInvocation
     @Override
-    public List<CourseDto> findAll(Pageable pageable) {
-        List<Course> courses = courseRep.findAll(pageable).stream().toList();
-        return courses.stream().map(mapper::mapToCourseDto).collect(Collectors.toList());
+    public Page<CourseDto> findAll(Pageable pageable) {
+        return courseRep.findAll(pageable).map(mapper::mapToCourseDto);
     }
 
     @LogInvocation
