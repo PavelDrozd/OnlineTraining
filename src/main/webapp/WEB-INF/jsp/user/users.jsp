@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,19 +15,17 @@
             <p><c:out value="${requestScope.message}"/></p>
             <table class="table table-bordered border-primary my-2">
                 <tr>
-                    <th><fmt:message key="msg.hashtag"/></th>
-                    <th><fmt:message key="msg.user.firstname"/></th>
-                    <th><fmt:message key="msg.user.lastname"/></th>
-                    <th><fmt:message key="msg.user.age"/></th>
-                    <th><fmt:message key="msg.user.email"/></th>
+                    <th><spring:message code="msg.hashtag"/></th>
+                    <th><spring:message code="msg.user.personalinfo.firstname"/></th>
+                    <th><spring:message code="msg.user.personalinfo.lastname"/></th>
+                    <th><spring:message code="msg.user.personalinfo.email"/></th>
                 </tr>
                 <c:forEach items="${users}" var="user" varStatus="counter">
                     <tr>
                         <td><c:out value="${counter.count}"/></td>
-                        <td><c:out value="${user.firstName}"/></td>
-                        <td><c:out value="${user.lastName}"/></td>
-                        <td><c:out value="${user.age}"/></td>
-                        <td><a href="/user/${user.id}"><c:out value="${user.email}"/></a></td>
+                        <td><c:out value="${user.personalInfo.firstName}"/></td>
+                        <td><c:out value="${user.personalInfo.lastName}"/></td>
+                        <td><a href="/user/${user.id}"><c:out value="${user.personalInfo.email}"/></a></td>
                     </tr>
                 </c:forEach>
             </table>

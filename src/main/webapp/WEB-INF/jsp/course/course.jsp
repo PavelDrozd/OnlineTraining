@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,11 +14,11 @@
         <div class="container text-center my-2">
             <p><c:out value="${requestScope.message}"/></p>
             <table class="table table-bordered border-primary my-2">
-                <tr><th><fmt:message key="msg.field"/></th><th><fmt:message key="msg.value"/></th></tr>
-                <tr><td><fmt:message key="msg.id"/></td><td><c:out value="${course.id}"/></td><tr>
-                <tr><td><fmt:message key="msg.course.course"/></td><td><c:out value="${course.name}"/></td><tr>
-                <tr><td><fmt:message key="msg.course.cost"/></td><td><c:out value="${course.cost}"/></td><tr>
-                <tr><td><fmt:message key="msg.course.duration.days"/></td><td><c:out value="${course.durationDays}"/></td><tr>
+                <tr><th><spring:message code="msg.field"/></th><th><spring:message code="msg.value"/></th></tr>
+                <tr><td><spring:message code="msg.id"/></td><td><c:out value="${course.id}"/></td><tr>
+                <tr><td><spring:message code="msg.course.course"/></td><td><c:out value="${course.name}"/></td><tr>
+                <tr><td><spring:message code="msg.course.cost"/></td><td><c:out value="${course.cost}"/></td><tr>
+                <tr><td><spring:message code="msg.course.duration.days"/></td><td><c:out value="${course.durationDays}"/></td><tr>
             </table>
         </div>
     </body>

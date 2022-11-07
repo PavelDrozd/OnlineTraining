@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,12 +15,11 @@
             <p><c:out value="${requestScope.message}"/></p>
 
             <table class="table table-bordered border-primary my-2">
-                <tr><th><fmt:message key="msg.field"/></th><th><fmt:message key="msg.value"/></th></tr>
-                <tr><td><fmt:message key="msg.id"/></td><td><c:out value="${user.id}"/></td><tr>
-                <tr><td><fmt:message key="msg.user.firstname"/></td><td><c:out value="${user.firstName}"/></td><tr>
-                <tr><td><fmt:message key="msg.user.lastname"/></td><td><c:out value="${user.lastName}"/></td><tr>
-                <tr><td><fmt:message key="msg.user.age"/></td><td><c:out value="${user.age}"/></td><tr>
-                <tr><td><fmt:message key="msg.user.email"/></td><td><c:out value="${user.email}"/></td><tr>
+                <tr><th><spring:message code="msg.field"/></th><th><spring:message code="msg.value"/></th></tr>
+                <tr><td><spring:message code="msg.id"/></td><td><c:out value="${user.id}"/></td><tr>
+                <tr><td><spring:message code="msg.user.personalinfo.firstname"/></td><td><c:out value="${user.personalInfo.firstName}"/></td><tr>
+                <tr><td><spring:message code="msg.user.personalinfo.lastname"/></td><td><c:out value="${user.personalInfo.lastName}"/></td><tr>
+                <tr><td><spring:message code="msg.user.personalinfo.email"/></td><td><c:out value="${user.personalInfo.email}"/></td><tr>
             </table>
         </div>
     </body>
