@@ -10,12 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,14 +26,19 @@ public class UserController {
     private final UserService userService;
     private final PaginationUtil paginationUtil;
 
+    @ModelAttribute
+    public UserDto userDto() {
+        return new UserDto();
+    }
+
     @GetMapping("/login")
     public String loginForm() {
         return "user/loginForm";
     }
 
     @RequestMapping(value = "/login_user", method = RequestMethod.POST)
-    public String login(UserDto userLogin, HttpSession session, Model model) {
-        UserDto user = userService.login(userLogin.getPersonalInfo().getEmail(), userLogin.getPassword());
+    public String login(@ModelAttribute @Valid UserDto userDto, HttpSession session, Model model) {
+        UserDto user = userService.login(userDto.getLogin(), userDto.getPassword());
         session.setAttribute("user", user);
         model.addAttribute("message", "Succesfully login!");
         return "index";
