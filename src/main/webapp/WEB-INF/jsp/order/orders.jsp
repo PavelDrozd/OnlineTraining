@@ -19,12 +19,13 @@
                     <th><spring:message code="msg.user.personalinfo.firstname"/></th>
                     <th><spring:message code="msg.user.personalinfo.lastname"/></th>
                     <th><spring:message code="msg.user.personalinfo.email"/></th>
+                    <th><spring:message code="msg.user.totalcost"/></th>
                 </tr>
                 <c:forEach items="${orders}" var="order" varStatus="counter">
                     <tr>
                         <td><a href="controller?command=order&id=${order.id}"><c:out value="${counter.count}"/></a></td>
-                        <td><c:out value="${order.user.firstName}"/></td>
-                        <td><c:out value="${order.user.lastName}"/></td>
+                        <td><c:out value="${order.user.personalInfo.firstName}"/></td>
+                        <td><c:out value="${order.user.personalInfo.lastName}"/></td>
                         <td><c:out value="${order.status.toString().toLowerCase()}"/></td>
                         <td><c:out value="${order.totalCost}"/></td>
                     </tr>

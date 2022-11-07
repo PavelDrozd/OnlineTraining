@@ -24,11 +24,11 @@
                 </tr>
                 <tr>
                     <td><spring:message code="msg.user.personalinfo.firstname"/></td>
-                    <td><c:out value="${order.user.firstName}"/></td>
+                    <td><c:out value="${order.user.personalInfo.firstName}"/></td>
                 </tr>
                 <tr>
                     <td><spring:message code="msg.user.personalinfo.lastname"/></td>
-                    <td><c:out value="${order.user.lastName}"/></td>
+                    <td><c:out value="${order.user.personalInfo.lastName}"/></td>
                 <tr>
                 <tr>
                     <td><spring:message code="msg.user.personalinfo.status"/></td>
