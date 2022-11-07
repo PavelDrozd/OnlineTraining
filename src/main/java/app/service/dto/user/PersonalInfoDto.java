@@ -12,20 +12,20 @@ public class PersonalInfoDto {
 
     private Long id;
 
-    @NotBlank(message = "Firstname is required")
-    @Size(max = 15, message = "Firstname is too long")
+    @NotBlank(message = "{errors.personalifno.create.firstname.empty}")
+    @Size(max = 15, message = "{errors.personalifno.create.firstname.long}")
     private String firstName;
 
-    @NotBlank(message = "Lastname is required")
-    @Size(max = 15, message = "Lastname is too long")
+    @NotBlank(message = "{errors.personalifno.create.lastname.empty}")
+    @Size(max = 15, message = "{errors.personalifno.create.lastname.long}")
     private String lastName;
 
-    @Size(max = 15, message = "Patronymic is too long")
+    @Size(max = 15, message = "{errors.personalifno.create.patronymic.long}")
     private String patronymic;
 
-    @NotBlank(message = "Email is required")
-    @Size(max = 35, message = "Email is too long")
-    @Size(min = 5, message = "Email is too short")
+    @NotBlank(message = "{errors.personalifno.create.email.empty}")
+    @Size(max = 35, message = "{errors.personalifno.create.email.long}")
+    @Size(min = 5, message = "{errors.personalifno.create.email.short}")
     private String email;
 
     private LocalDate dayOfBirth;

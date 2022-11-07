@@ -12,14 +12,14 @@ public class UserDto {
 
     private Long id;
 
-    @NotBlank(message = "Login is required")
-    @Size(min = 5, message = "TLogin is too short")
-    @Size(max = 35, message = "Login is too long")
+    @NotBlank(message = "{errors.user.create.login.empty}")
+    @Size(min = 5, message = "{errors.user.create.login.short}")
+    @Size(max = 35, message = "{errors.user.create.login.long}")
     private String login;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 4, message = "Password is too short")
-    @Size(max = 35, message = "Password is too long")
+    @NotBlank(message = "{errors.user.create.password.empty}")
+    @Size(min = 4, message = "{errors.user.create.password.short}")
+    @Size(max = 35, message = "{errors.user.create.password.long}")
     @JsonIgnore
     private String password;
 
