@@ -77,8 +77,7 @@ public class UserServiceImpl implements UserService {
     public UserDto login(String login, String password) {
         Optional<User> user = userRep.findByLogin(login);
         String hashedPassword = digestUtil.hash(password);
-        if (user.orElseThrow(() -> new ServiceException("Incorrect login or password"))
-                .getPassword().equals(hashedPassword)) {
+        if (user.isEmpty() || !user.get().getPassword().equals(hashedPassword)) {
             throw new ServiceException("Incorrect login or password");
         }
         return mapper.mapToUserDto(user.get());
