@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="messages"/>
-<c:if test="${sessionScope.language != null}">
-<fmt:setLocale value="${sessionScope.language}"/>
-</c:if>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,8 +12,7 @@
     <body>
         <jsp:include page="navbar/navbar.jsp"/>
         <div class="container text-center my-2">
-
-            <p><c:out value="${requestScope.message}"/></p>
+            <h1><spring:message code="msg.index.hello"/></h1>
 
         </div>
     </body>

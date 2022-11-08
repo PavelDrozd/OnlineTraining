@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="messages"/>
-<c:if test="${sessionScope.language != null}">
-<fmt:setLocale value="${sessionScope.language}"/>
-</c:if>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,11 +15,11 @@
             <p><c:out value="${requestScope.message}"/></p>
             <table class="table table-bordered border-primary my-2">
                 <tr>
-                    <th><fmt:message key="msg.hashtag"/></th>
-                    <th><fmt:message key="msg.course.course"/></th>
-                    <th><fmt:message key="msg.course.cost"/></th>
-                    <th><fmt:message key="msg.course.duration.days"/></th>
-                    <th><fmt:message key="msg.course.action"/></th>
+                    <th><spring:message code="msg.hashtag"/></th>
+                    <th><spring:message code="msg.course.course"/></th>
+                    <th><spring:message code="msg.course.cost"/></th>
+                    <th><spring:message code="msg.course.duration.days"/></th>
+                    <th><spring:message code="msg.course.action"/></th>
                 </tr>
                 <c:forEach items="${courses}" var="course" varStatus="counter">
                     <tr>
@@ -31,7 +27,7 @@
                         <td><c:out value="${course.name}"/></td>
                         <td><c:out value="${course.cost}"/>$</td>
                         <td><c:out value="${course.durationDays}"/></td>
-                        <td><a href="/course/${course.id}"><fmt:message key="msg.detail"/></a></td>
+                        <td><a href="/course/${course.id}"><spring:message code="msg.detail"/></a></td>
                     </tr>
                 </c:forEach>
             </table>

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="messages"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,25 +12,19 @@
     <body>
         <jsp:include page="../../navbar/navbar.jsp"/>
         <div class="container text-left my-2">
-            <h1> Profile </h1>
-
+            <h1><spring:message code="msg.user.profile"/></h1>
                 <p>
-                    Name: <c:out value="${sessionScope.user.firstName}"/> <c:out value="${sessionScope.user.lastName}"/>
-                    <a href="/edit_name" class="btn btn-secondary btn-sm">Edit name</a>
+                    <spring:message code="msg.user.name"/>: <c:out value="${sessionScope.user.personalInfo.firstName}"/> <c:out value="${sessionScope.user.personalInfo.lastName}"/>
+                    <a href="/edit_name" class="btn btn-secondary btn-sm"><spring:message code="msg.user.profile.edit.name"/></a>
                 </p>
                 <p>
-                    Age: <c:out value="${sessionScope.user.age}"/>
-                    <a href="/edit_age" class="btn btn-secondary btn-sm">Edit age</a>
+                    <spring:message code="msg.user.personalinfo.email"/>: <c:out value="${sessionScope.user.personalInfo.email}"/>
+                    <a href="/edit_email" class="btn btn-secondary btn-sm"><spring:message code="msg.user.profile.edit.email"/></a>
                 </p>
                 <p>
-                    Email: <c:out value="${sessionScope.user.email}"/>
-                    <a href="/edit_email" class="btn btn-secondary btn-sm">Edit email</a>
+                    <spring:message code="msg.user.role"/>: <c:out value="${sessionScope.user.role.toString()}"/>
                 </p>
-                <p>
-                    Role: <c:out value="${sessionScope.user.roleDto.toString()}"/>
-                </p>
-                <a href="/edit_password" class="btn btn-secondary btn-sm">Change password</a>
-
+                <a href="/edit_password" class="btn btn-secondary btn-sm"><spring:message code="msg.user.profile.edit.password"/></a>
         </div>
     </body>
 </html>
