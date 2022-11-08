@@ -12,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -36,11 +34,9 @@ public class OrderServiceImpl implements OrderService {
     @LogInvocation
     @Override
     public OrderDto get(Long id) {
-        Optional<Order> order = orderRep.findById(id);
-        if (order.isEmpty()) {
-            throw new ServiceException("Order with id: " + id + "doesn't exist");
-        }
-        return mapper.mapToOrderDto(order.get());
+        return orderRep.findById(id)
+                .map(mapper::mapToOrderDto)
+                .orElseThrow(() -> new ServiceException("Order with id: " + id + "doesn't exist"));
     }
 
     @LogInvocation

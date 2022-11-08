@@ -44,11 +44,9 @@ public class UserServiceImpl implements UserService {
     @LogInvocation
     @Override
     public UserDto get(Long id) {
-        Optional<User> user = userRep.findById(id);
-        if (user.isEmpty()) {
-            throw new ServiceException("User with id " + id + " doesn't exist");
-        }
-        return mapper.mapToUserDto(user.get());
+        return userRep.findById(id)
+                .map(mapper::mapToUserDto)
+                .orElseThrow(() -> new ServiceException("User with id " + id + " doesn't exist"));
     }
 
     @LogInvocation
@@ -85,7 +83,8 @@ public class UserServiceImpl implements UserService {
 
     private void loginAndEmailValidation(UserDto userDto) {
         Optional<User> existing = userRep.findById(userDto.getId());
-        String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist")).getLogin();
+        String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
+                .getLogin();
         checkLogin(userDto, existingLogin);
         String existingEmail = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
                 .getPersonalInfo().getEmail();

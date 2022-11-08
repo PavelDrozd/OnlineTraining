@@ -40,11 +40,9 @@ public class CourseServiceImpl implements CourseService {
     @LogInvocation
     @Override
     public CourseDto get(Long id) {
-        Optional<Course> course = courseRep.findById(id);
-        if (course.isEmpty()) {
-            throw new ServiceException("Course with id: " + id + "doesn't exist");
-        }
-        return mapper.mapToCourseDto(course.get());
+        return courseRep.findById(id)
+                .map(mapper::mapToCourseDto)
+                .orElseThrow(() -> new ServiceException("Course with id: " + id + "doesn't exist"));
     }
 
     @LogInvocation
