@@ -29,13 +29,13 @@ public class OrderServiceImpl implements OrderService {
 
     @LogInvocation
     @Override
-    public Page<OrderDto> findAll(Pageable pageable) {
+    public Page<OrderDto> getAll(Pageable pageable) {
         return orderRep.findAll(pageable).map(mapper::mapToOrderDto);
     }
 
     @LogInvocation
     @Override
-    public OrderDto findById(Long id) {
+    public OrderDto get(Long id) {
         Optional<Order> order = orderRep.findById(id);
         if (order.isEmpty()) {
             throw new ServiceException("Order with id: " + id + "doesn't exist");

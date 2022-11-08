@@ -33,13 +33,13 @@ public class CourseServiceImpl implements CourseService {
 
     @LogInvocation
     @Override
-    public Page<CourseDto> findAll(Pageable pageable) {
+    public Page<CourseDto> getAll(Pageable pageable) {
         return courseRep.findAll(pageable).map(mapper::mapToCourseDto);
     }
 
     @LogInvocation
     @Override
-    public CourseDto findById(Long id) {
+    public CourseDto get(Long id) {
         Optional<Course> course = courseRep.findById(id);
         if (course.isEmpty()) {
             throw new ServiceException("Course with id: " + id + "doesn't exist");

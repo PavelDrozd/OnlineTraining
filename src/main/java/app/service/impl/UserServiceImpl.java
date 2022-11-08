@@ -37,13 +37,13 @@ public class UserServiceImpl implements UserService {
 
     @LogInvocation
     @Override
-    public Page<UserDto> findAll(Pageable pageable) {
+    public Page<UserDto> getAll(Pageable pageable) {
         return userRep.findAll(pageable).map(mapper::mapToUserDto);
     }
 
     @LogInvocation
     @Override
-    public UserDto findById(Long id) {
+    public UserDto get(Long id) {
         Optional<User> user = userRep.findById(id);
         if (user.isEmpty()) {
             throw new ServiceException("User with id " + id + " doesn't exist");
