@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.ServiceException;
+import app.exceptions.service.ServiceException;
 import app.interceptors.LogInvocation;
 import app.repository.PersonalInfoRep;
 import app.repository.PosibilitiesRep;
@@ -75,7 +75,8 @@ public class UserServiceImpl implements UserService {
     public UserDto login(String login, String password) {
         Optional<User> user = userRep.findByLogin(login);
         String hashedPassword = digestUtil.hash(password);
-        if (user.isEmpty() || !user.get().getPassword().equals(hashedPassword)) {
+        if (!user.orElseThrow(() -> new ServiceException("User doesn't exist"))
+                .getPassword().equals(hashedPassword)) {
             throw new ServiceException("Incorrect login or password");
         }
         return mapper.mapToUserDto(user.get());
