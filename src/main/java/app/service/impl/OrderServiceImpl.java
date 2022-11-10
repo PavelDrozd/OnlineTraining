@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.ServiceException;
+import app.exceptions.service.ServiceException;
 import app.interceptors.LogInvocation;
 import app.repository.OrderRep;
 import app.repository.entity.order.Order;
