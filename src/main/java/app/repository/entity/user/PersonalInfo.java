@@ -7,13 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -47,10 +45,6 @@ public class PersonalInfo {
 
     @Column(name = "deleted")
     private boolean deleted;
-
-    @OneToOne(mappedBy = "personalInfo", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private User user;
 
     @Override
     public boolean equals(Object o) {
