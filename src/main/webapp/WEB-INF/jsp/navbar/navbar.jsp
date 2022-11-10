@@ -11,10 +11,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/course/list"><spring:message code="msg.nav.courses"/></a>
+                    <a class="nav-link" href="/courses"><spring:message code="msg.nav.courses"/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/list"><spring:message code="msg.nav.users"/></a>
+                    <a class="nav-link" href="/users"><spring:message code="msg.nav.users"/></a>
                 </li>
 
                 <c:if test="${sessionScope.user != null}">
