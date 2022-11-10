@@ -9,13 +9,14 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <script defer src="/js/bootstrap-5.2.0.js"></script>
         <script defer src="/js/jquery-3.6.1.js"></script>
-        <script type="module" src="/js/users.js"></script>
+        <script type="module" src="/js/user/users.js"></script>
 
     </head>
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="query-string" style="display: none"><c:out value="${requestScope.queryString}"/></div>
         <p><c:out value="${requestScope.message}"/></p>
+        <div class="container text-center my-2">
             <div class="pagination">
                 <button class="first">First</button>
                 <button class="prev">Prev</button>
@@ -35,5 +36,6 @@
                 <tbody>
                 </tbody>
             </table>
+        </div>
     </body>
 </html>

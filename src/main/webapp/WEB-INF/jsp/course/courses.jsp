@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <script defer src="/js/bootstrap-5.2.0.js"></script>
         <script defer src="/js/jquery-3.6.1.js"></script>
-        <script type="module" src="/js/courses.js"></script>
+        <script type="module" src="/js/course/courses.js"></script>
     </head>
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
