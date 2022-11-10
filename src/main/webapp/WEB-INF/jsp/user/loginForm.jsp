@@ -15,7 +15,7 @@
         <div class="container text-left my-4">
             <h1><spring:message code="msg.nav.login"/></h1>
             <p><c:out value="${requestScope.message}"/></p>
-            <form:form class="login-form" method="post" action="/login_user" modelAttribute="userDto">
+            <form:form class="login-form" method="post" action="/users/login" modelAttribute="user">
                 <form:errors path="login" align-self="start" color="red"/>
                 <form:errors path="password" align-self="start" color="red"/>
                 <form:label path="login"><spring:message code="msg.user.login"/><form:input path="login" type="text"/></form:label>

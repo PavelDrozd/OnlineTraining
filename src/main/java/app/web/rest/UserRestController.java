@@ -8,11 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -31,10 +28,9 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class UserRestController {
 
-    private final String ATTR_USER ="user";
-    private final String ATTR_MESSAGE ="user";
-    private final String MESSAGE_SUCCEFULLY_LOGIN ="Succesfully login";
-    private static final String INDEX_PAGE = "index";
+    private final String ATTR_USER = "user";
+    private final String ATTR_MESSAGE = "user";
+
 
     private final UserService userService;
 
@@ -47,14 +43,6 @@ public class UserRestController {
     @GetMapping
     public Page<UserDto> getAll(Pageable pageable) {
         return userService.getAll(pageable);
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute @Valid UserDto userDto, HttpSession session, Model model) {
-        UserDto user = userService.login(userDto.getLogin(), userDto.getPassword());
-        session.setAttribute(ATTR_USER, user);
-        model.addAttribute(ATTR_MESSAGE, MESSAGE_SUCCEFULLY_LOGIN);
-        return INDEX_PAGE;
     }
 
     @PostMapping
