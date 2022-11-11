@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
@@ -22,6 +24,7 @@ public class UserViewController {
     private final String ATTR_USER = "user";
     private final String ATTR_MESSAGE = "user";
     private final String MESSAGE_LOGIN_REQUEST = "Please login";
+    private final String MESSAGE_SUCCEFULLY_LOGIN = "Succesfully login";
 
     private final String INDEX_PAGE = "index";
     private final String LOGIN_FORM_PAGE = "user/loginForm";
@@ -41,6 +44,14 @@ public class UserViewController {
     @GetMapping("/login")
     public String loginForm() {
         return LOGIN_FORM_PAGE;
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute @Valid UserDto userDto, HttpSession session, Model model) {
+        UserDto user = userService.login(userDto.getLogin(), userDto.getPassword());
+        session.setAttribute(ATTR_USER, user);
+        model.addAttribute(ATTR_MESSAGE, MESSAGE_SUCCEFULLY_LOGIN);
+        return INDEX_PAGE;
     }
 
     @GetMapping("/logout")
@@ -87,6 +98,5 @@ public class UserViewController {
         model.addAttribute(ATTR_USER, user);
         return EDIT_PAGE;
     }
-
 
 }
