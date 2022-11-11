@@ -25,7 +25,10 @@ $(function() {
     function renderTableRow(u, $tbody) {
         const $row = $(`
             <tr id ="row-${u.id}">
-                <td>${u.login}</td>
+                <td>${u.personalInfo.firstName}</td>
+                <td>${u.personalInfo.lastName}</td>
+                <td>${u.personalInfo.email}</td>
+                <td>${u.role}</td>
 		        <td>
 					<button class="view">View</button>
 					<button class="edit">Edit</button>

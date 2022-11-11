@@ -10,7 +10,6 @@
         <script defer src="/js/bootstrap-5.2.0.js"></script>
         <script defer src="/js/jquery-3.6.1.js"></script>
         <script type="module" src="/js/user/users.js"></script>
-
     </head>
     <body>
         <jsp:include page="../navbar/navbar.jsp"/>
@@ -27,10 +26,11 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th><spring:message code="msg.hashtag"/></th>
                     <th><spring:message code="msg.user.personalinfo.firstname"/></th>
                     <th><spring:message code="msg.user.personalinfo.lastname"/></th>
                     <th><spring:message code="msg.user.personalinfo.email"/></th>
+                    <th><spring:message code="msg.user.role"/></th>
+                    <th><spring:message code="msg.user.action"/></th>
                 </tr>
                 </thead>
                 <tbody>

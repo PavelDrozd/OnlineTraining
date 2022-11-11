@@ -26,6 +26,9 @@ $(function() {
         const $row = $(`
             <tr id ="row-${c.id}">
                 <td>${c.name}</td>
+                <td>${c.cost}</td>
+                <td>${c.discount}</td>
+                <td>${c.durationDays}</td>
                 <td>
 					<button class="view">View</button>
 					<button class="edit">Edit</button>
