@@ -13,15 +13,15 @@
         <jsp:include page="../navbar/navbar.jsp"/>
         <div class="container text-left my-2">
             <h1><spring:message code="msg.user.profile"/></h1>
-                <p>
-                    <spring:message code="msg.user.name"/>: <c:out value="${sessionScope.user.personalInfo.firstName}"/> <c:out value="${sessionScope.user.personalInfo.lastName}"/>
-                </p>
-                <p>
-                    <spring:message code="msg.user.personalinfo.email"/>: <c:out value="${sessionScope.user.personalInfo.email}"/>
-                </p>
-                <p>
-                    <spring:message code="msg.user.role"/>: <c:out value="${sessionScope.user.role.toString()}"/>
-                </p>
+            <p>
+                <spring:message code="msg.user.name"/>: <c:out value="${sessionScope.user.personalInfo.firstName}"/> <c:out value="${sessionScope.user.personalInfo.lastName}"/>
+            </p>
+            <p>
+                <spring:message code="msg.user.personalinfo.email"/>: <c:out value="${sessionScope.user.personalInfo.email}"/>
+            </p>
+            <p>
+                <spring:message code="msg.user.role"/>: <c:out value="${sessionScope.user.role.toString()}"/>
+            </p>
         </div>
     </body>
 </html>

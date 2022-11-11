@@ -19,26 +19,25 @@
             <p><c:out value="${requestScope.message}"/></p>
             <form class="input-form">
                 <label for="input-firstname"><spring:message code="msg.user.personalinfo.firstname"/></label>
-                <input id="input-firstname" type="text"/>
+                <input id="input-firstname" type="text" required="true"/>
                 <br/>
                 <label for="input-lastname"><spring:message code="msg.user.personalinfo.lastname"/></label>
-                <input id="input-lastname" type="text"/>
+                <input id="input-lastname" type="text" required="true"/>
                 <br/>
                 <label for="input-patronymic"><spring:message code="msg.user.personalinfo.patronymic"/></label>
                 <input id="input-patronymic" type="text"/>
                 <br/>
                 <label for="input-email"><spring:message code="msg.user.personalinfo.email"/></label>
-                <input id="input-email" type="email"/>
+                <input id="input-email" type="email" required="true"/>
                 <br/>
                 <label for="input-login"><spring:message code="msg.user.login"/></label>
-                <input id="input-login" type="text"/>
+                <input id="input-login" type="text" required="true"/>
                 <br/>
                 <label for="input-password"><spring:message code="msg.user.password"/></label>
-                <input id="input-password" type="password"/>
+                <input id="input-password" type="password" required="true"/>
                 <br/>
-                <button class="create">Create</button>
+                <button class="create"><spring:message code="msg.user.register"/></button>
             </form>
-
         </div>
     </body>
 </html>
