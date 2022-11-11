@@ -4,9 +4,14 @@ $(function() {
 
 	function sendData(e) {
 		e.preventDefault();
+		const firstName = $("#input-firstname").val();
+		const lastName = $("#input-lastname").val();
+		const patronymic = $("#input-patronymic").val();
+		const email = $("#input-email").val();
+		const personalInfo = {firstName, lastName, patronymic, email};
 		const login = $("#input-login").val();
 		const password = $("#input-password").val();
-		const user = {login, password};
+		const user = {login, personalInfo, password};
 		$.ajax({
 			type: "POST",
 			url: "/api/users/register",

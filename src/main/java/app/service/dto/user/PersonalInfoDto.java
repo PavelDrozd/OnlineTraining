@@ -1,7 +1,6 @@
 package app.service.dto.user;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -32,6 +31,4 @@ public class PersonalInfoDto {
 
     private boolean deleted;
 
-    @ToString.Exclude
-    private UserDto user;
 }

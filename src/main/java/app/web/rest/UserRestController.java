@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -41,9 +42,10 @@ public class UserRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> create(@RequestBody @Valid UserDto user, Errors errors) {
+    public ResponseEntity<UserDto> create(@RequestBody @Valid UserDto user, HttpSession session, Errors errors) {
         checkErrors(errors);
         UserDto created = userService.create(user);
+        session.setAttribute("user", created);
         return buildResponseUser(created);
     }
 

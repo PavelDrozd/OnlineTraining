@@ -18,6 +18,18 @@
             <h1> <spring:message code="msg.user.register"/> </h1>
             <p><c:out value="${requestScope.message}"/></p>
             <form class="input-form">
+                <label for="input-firstname"><spring:message code="msg.user.personalinfo.firstname"/></label>
+                <input id="input-firstname" type="text"/>
+                <br/>
+                <label for="input-lastname"><spring:message code="msg.user.personalinfo.lastname"/></label>
+                <input id="input-lastname" type="text"/>
+                <br/>
+                <label for="input-patronymic"><spring:message code="msg.user.personalinfo.patronymic"/></label>
+                <input id="input-patronymic" type="text"/>
+                <br/>
+                <label for="input-email"><spring:message code="msg.user.personalinfo.email"/></label>
+                <input id="input-email" type="email"/>
+                <br/>
                 <label for="input-login"><spring:message code="msg.user.login"/></label>
                 <input id="input-login" type="text"/>
                 <br/>
