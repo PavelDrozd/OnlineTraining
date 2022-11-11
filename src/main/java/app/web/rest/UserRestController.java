@@ -28,10 +28,6 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class UserRestController {
 
-    private final String ATTR_USER = "user";
-    private final String ATTR_MESSAGE = "user";
-
-
     private final UserService userService;
 
     @GetMapping("/{id}")
@@ -39,13 +35,12 @@ public class UserRestController {
         return userService.get(id);
     }
 
-
     @GetMapping
     public Page<UserDto> getAll(Pageable pageable) {
         return userService.getAll(pageable);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserDto> create(@RequestBody @Valid UserDto user, Errors errors) {
         checkErrors(errors);
         UserDto created = userService.create(user);

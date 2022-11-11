@@ -47,7 +47,7 @@ create TABLE IF NOT EXISTS  users (
     id BIGSERIAL PRIMARY KEY,
     login varchar (35) NOT NULL,
     password varchar (50) NOT NULL,
-    personal_info_id bigint NOT NULL REFERENCES personal_infos,
+    personal_info_id bigint REFERENCES personal_infos,
     role_id int4 NOT NULL REFERENCES roles,
     deleted boolean DEFAULT FALSE
 );

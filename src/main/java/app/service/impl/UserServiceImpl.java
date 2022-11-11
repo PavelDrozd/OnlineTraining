@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         userDto.setPassword(digestUtil.hash(userDto.getPassword()));
+        userDto.setRole(UserDto.Role.USER);
         User user = userRep.save(mapper.mapToUser(userDto));
         return mapper.mapToUserDto(user);
     }
