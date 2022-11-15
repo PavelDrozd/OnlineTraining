@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.ServiceException;
+import app.exceptions.service.ServiceException;
 import app.interceptors.LogInvocation;
 import app.repository.PersonalInfoRep;
 import app.repository.PosibilitiesRep;
@@ -31,24 +31,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         userDto.setPassword(digestUtil.hash(userDto.getPassword()));
+        userDto.setRole(UserDto.Role.USER);
         User user = userRep.save(mapper.mapToUser(userDto));
         return mapper.mapToUserDto(user);
     }
 
     @LogInvocation
     @Override
-    public Page<UserDto> findAll(Pageable pageable) {
+    public Page<UserDto> getAll(Pageable pageable) {
         return userRep.findAll(pageable).map(mapper::mapToUserDto);
     }
 
     @LogInvocation
     @Override
-    public UserDto findById(Long id) {
-        Optional<User> user = userRep.findById(id);
-        if (user.isEmpty()) {
-            throw new ServiceException("User with id " + id + " doesn't exist");
-        }
-        return mapper.mapToUserDto(user.get());
+    public UserDto get(Long id) {
+        return userRep.findById(id)
+                .map(mapper::mapToUserDto)
+                .orElseThrow(() -> new ServiceException("User with id " + id + " doesn't exist"));
     }
 
     @LogInvocation
@@ -77,7 +76,8 @@ public class UserServiceImpl implements UserService {
     public UserDto login(String login, String password) {
         Optional<User> user = userRep.findByLogin(login);
         String hashedPassword = digestUtil.hash(password);
-        if (user.isEmpty() || !user.get().getPassword().equals(hashedPassword)) {
+        if (!user.orElseThrow(() -> new ServiceException("User doesn't exist"))
+                .getPassword().equals(hashedPassword)) {
             throw new ServiceException("Incorrect login or password");
         }
         return mapper.mapToUserDto(user.get());
@@ -85,7 +85,8 @@ public class UserServiceImpl implements UserService {
 
     private void loginAndEmailValidation(UserDto userDto) {
         Optional<User> existing = userRep.findById(userDto.getId());
-        String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist")).getLogin();
+        String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
+                .getLogin();
         checkLogin(userDto, existingLogin);
         String existingEmail = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
                 .getPersonalInfo().getEmail();

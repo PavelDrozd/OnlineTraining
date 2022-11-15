@@ -11,29 +11,29 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/course/list"><spring:message code="msg.nav.courses"/></a>
+                    <a class="nav-link" href="/courses"><spring:message code="msg.nav.courses"/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/list"><spring:message code="msg.nav.users"/></a>
+                    <a class="nav-link" href="/users"><spring:message code="msg.nav.users"/></a>
                 </li>
 
                 <c:if test="${sessionScope.user != null}">
                     <li class="nav-item">
-                        <a class="nav-link" href="/order/list"><spring:message code="msg.nav.orders"/></a>
+                        <a class="nav-link" href="/orders"><spring:message code="msg.nav.orders"/></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile"><spring:message code="msg.nav.profile"/></a>
+                        <a class="nav-link" href="/users/profile"><spring:message code="msg.nav.profile"/></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/logout"><spring:message code="msg.nav.logout"/></a>
+                        <a class="nav-link" aria-current="page" href="/users/logout"><spring:message code="msg.nav.logout"/></a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.user == null}">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/login"><spring:message code="msg.nav.login"/></a>
+                        <a class="nav-link" aria-current="page" href="/users/login"><spring:message code="msg.nav.login"/></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register"><spring:message code="msg.nav.register"/></a>
+                        <a class="nav-link" href="/users/register"><spring:message code="msg.nav.register"/></a>
                     </li>
                 </c:if>
 

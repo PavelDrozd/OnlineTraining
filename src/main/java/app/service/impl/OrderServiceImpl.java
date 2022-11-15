@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.ServiceException;
+import app.exceptions.service.ServiceException;
 import app.interceptors.LogInvocation;
 import app.repository.OrderRep;
 import app.repository.entity.order.Order;
@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,18 +27,16 @@ public class OrderServiceImpl implements OrderService {
 
     @LogInvocation
     @Override
-    public Page<OrderDto> findAll(Pageable pageable) {
+    public Page<OrderDto> getAll(Pageable pageable) {
         return orderRep.findAll(pageable).map(mapper::mapToOrderDto);
     }
 
     @LogInvocation
     @Override
-    public OrderDto findById(Long id) {
-        Optional<Order> order = orderRep.findById(id);
-        if (order.isEmpty()) {
-            throw new ServiceException("Order with id: " + id + "doesn't exist");
-        }
-        return mapper.mapToOrderDto(order.get());
+    public OrderDto get(Long id) {
+        return orderRep.findById(id)
+                .map(mapper::mapToOrderDto)
+                .orElseThrow(() -> new ServiceException("Order with id: " + id + "doesn't exist"));
     }
 
     @LogInvocation

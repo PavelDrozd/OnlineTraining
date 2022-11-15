@@ -1,6 +1,5 @@
 package app.service.dto.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
@@ -20,7 +19,6 @@ public class UserDto {
     @NotBlank(message = "{errors.user.create.password.empty}")
     @Size(min = 4, message = "{errors.user.create.password.short}")
     @Size(max = 35, message = "{errors.user.create.password.long}")
-    @JsonIgnore
     private String password;
 
     private PersonalInfoDto personalInfo;

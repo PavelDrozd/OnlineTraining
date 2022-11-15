@@ -7,9 +7,9 @@ public interface AbstractService<T, K> {
 
     T create(T t);
 
-    Page<T> findAll(Pageable pageable);
+    Page<T> getAll(Pageable pageable);
 
-    T findById(K id);
+    T get(K id);
 
     T update(T t);
 

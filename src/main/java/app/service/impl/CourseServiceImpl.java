@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.ServiceException;
+import app.exceptions.service.ServiceException;
 import app.interceptors.LogInvocation;
 import app.repository.CourseRep;
 import app.repository.entity.course.Course;
@@ -25,7 +25,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto create(CourseDto courseDto) {
         Optional<Course> existing = courseRep.findById(courseDto.getId());
         if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
-            throw new ServiceException("Course with name " + courseDto.getName() + "already exists.");
+            throw new ServiceException("Course with name " + courseDto.getName() + " already exists.");
         }
         Course course = courseRep.save(mapper.mapToCourse(courseDto));
         return mapper.mapToCourseDto(course);
@@ -33,18 +33,16 @@ public class CourseServiceImpl implements CourseService {
 
     @LogInvocation
     @Override
-    public Page<CourseDto> findAll(Pageable pageable) {
+    public Page<CourseDto> getAll(Pageable pageable) {
         return courseRep.findAll(pageable).map(mapper::mapToCourseDto);
     }
 
     @LogInvocation
     @Override
-    public CourseDto findById(Long id) {
-        Optional<Course> course = courseRep.findById(id);
-        if (course.isEmpty()) {
-            throw new ServiceException("Course with id: " + id + "doesn't exist");
-        }
-        return mapper.mapToCourseDto(course.get());
+    public CourseDto get(Long id) {
+        return courseRep.findById(id)
+                .map(mapper::mapToCourseDto)
+                .orElseThrow(() -> new ServiceException("Course with id: " + id + " doesn't exist"));
     }
 
     @LogInvocation
@@ -52,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto update(CourseDto courseDto) {
         Optional<Course> existing = courseRep.findById(courseDto.getId());
         if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
-            throw new ServiceException("Course with name " + courseDto.getName() + "already exists.");
+            throw new ServiceException("Course with name " + courseDto.getName() + " already exists.");
         }
         Course course = courseRep.save(mapper.mapToCourse(courseDto));
         return mapper.mapToCourseDto(course);

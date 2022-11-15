@@ -1,7 +1,7 @@
 package app.service.util;
 
 
-import app.exceptions.ServiceException;
+import app.exceptions.service.ServiceException;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
