@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="container text-left my-2">
+    <h1 th:text="#{msg.profile}"></h1>
+    <div th:text="#{msg.profile.firstname}">
+        <p th:text="${sessionScope.user.personalInfo.firstName}"></p>
+    </div>
+    <div th:text="#{msg.profile.lastname}">
+        <p th:text="${#session.user.personalInfo.lastName}"></p>
+
+    </div>
+    <div th:text="#{msg.profile.email}">
+        <p th:text="${#session.user.personalInfo.email}"></p>
+    </div>
+    <div th:text="#{msg.profile.role}">
+        <p th:text="${#session.user.role.toString()}"></p>
+    </div>
+</div>
+</body>
+</html>

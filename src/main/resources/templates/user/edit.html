@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Edit user</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+    <script defer src="/js/jquery-3.6.1.js"></script>
+    <script type="module" src="/js/user/edit_profile.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="container text-left my-2">
+    <h1 th:text="#{msg.edit"></h1>
+    <form class="input-form">
+        <input id="input-id" value="${user.id}" type="hidden">
+        <label for="input-firstname" th:text="#{msg.edit.firstname}"></label>
+        <input id="input-firstname" type="text"/>
+        <br/>
+        <label for="input-lastname" th:text="#{msg.edit.lastname}"></label>
+        <input id="input-lastname" type="text"/>
+        <br/>
+        <label for="input-patronymic" th:text="#{msg.edit.patronymic}"></label>
+        <input id="input-patronymic" type="text"/>
+        <br/>
+        <label for="input-email" th:text="#{msg.edit.email}"></label>
+        <input id="input-email" type="email"/>
+        <br/>
+        <label for="input-username" th:text="#{msg.edit.username}"></label>
+        <input id="input-username" type="text"/>
+        <br/>
+        <label for="input-password" th:text="#{msg.edit.password}"></label>
+        <input id="input-password" type="password"/>
+        <br/>
+        <button class="edit" th:text="#{msg.edit}"></button>
+    </form>
+</div>
+</body>
+</html>

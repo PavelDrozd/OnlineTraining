@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+    <script defer src="/js/jquery-3.6.1.js"></script>
+    <script type="module" src="/js/user/users.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="query-string" style="display: none" th:text="${#request.queryString}"></div>
+<div class="container text-center my-2">
+    <div class="pagination">
+        <button class="first" th:text="#{msg.users.paging.first}">First</button>
+        <button class="prev" th:text="#{msg.users.paging.prev}">Prev</button>
+        <button class="current"></button>
+        <button class="next" th:text="#{msg.users.paging.next}">Next</button>
+        <button class="last" th:text="#{msg.users.paging.last}">Last</button>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th th:text="#{msg.users.firstname}"></th>
+            <th th:text="#{msg.users.lastname}"></th>
+            <th th:text="#{msg.users.email}"></th>
+            <th th:text="#{msg.users.role}"></th>
+            <th th:text="#{msg.users.action}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
