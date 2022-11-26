@@ -15,6 +15,7 @@
         <div th:if="${param.timeout}" class="error" th:text="#{msg.login.timeout}"></div>
         <div th:if="${param.error}" class="error" th:text="#{msg.login.error}"></div>
         <div th:if="${param.logout}" class="success" th:text="#{msg.login.logout.success}"></div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <label for="input-username" th:text="#{msg.login.username}"></label>
         <input id="input-username" type="text" name="username"/>
         <label for="input-password" th:text="#{msg.login.password}"></label>

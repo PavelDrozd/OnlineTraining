@@ -11,10 +11,10 @@ public class UserDto {
 
     private Long id;
 
-    @NotBlank(message = "{errors.user.create.login.empty}")
-    @Size(min = 5, message = "{errors.user.create.login.short}")
-    @Size(max = 35, message = "{errors.user.create.login.long}")
-    private String login;
+    @NotBlank(message = "{errors.user.create.username.empty}")
+    @Size(min = 5, message = "{errors.user.create.username.short}")
+    @Size(max = 35, message = "{errors.user.create.username.long}")
+    private String username;
 
     @NotBlank(message = "{errors.user.create.password.empty}")
     @Size(min = 4, message = "{errors.user.create.password.short}")

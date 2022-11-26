@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserService {
 
     @LogInvocation
     @Override
-    public UserDto login(String login, String password) {
-        Optional<User> user = userRep.findByLogin(login);
+    public UserDto login(String username, String password) {
+        Optional<User> user = userRep.findByUsername(username);
         String hashedPassword = digestUtil.hash(password);
         if (!user.orElseThrow(() -> new ServiceException("User doesn't exist"))
                 .getPassword().equals(hashedPassword)) {
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     private void loginAndEmailValidation(UserDto userDto) {
         Optional<User> existing = userRep.findById(userDto.getId());
         String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
-                .getLogin();
+                .getUsername();
         checkLogin(userDto, existingLogin);
         String existingEmail = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
                 .getPersonalInfo().getEmail();
@@ -94,10 +94,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkLogin(UserDto userDto, String existingLogin) {
-        if (!existingLogin.equals(userDto.getLogin())) {
-            Optional<User> user = userRep.findByLogin(userDto.getLogin());
+        if (!existingLogin.equals(userDto.getUsername())) {
+            Optional<User> user = userRep.findByUsername(userDto.getUsername());
             if (user.isPresent()) {
-                throw new ServiceException("User with login" + userDto.getLogin() + " already exist");
+                throw new ServiceException("User with login" + userDto.getUsername() + " already exist");
             }
         }
     }
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         if (!existingEmail.equals(userDto.getPersonalInfo().getEmail())) {
             Optional<PersonalInfo> personalInfo = personalInfoRep.findByEmail(userDto.getPersonalInfo().getEmail());
             if (personalInfo.isPresent()) {
-                throw new ServiceException("User with login" + userDto.getLogin() + " already exist");
+                throw new ServiceException("User with login" + userDto.getUsername() + " already exist");
             }
         }
     }

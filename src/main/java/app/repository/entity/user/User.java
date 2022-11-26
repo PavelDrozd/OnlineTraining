@@ -31,8 +31,8 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -44,6 +44,9 @@ public class User {
     @Convert(converter = RoleConverter.class)
     @Column(name = "role_id")
     private Role role;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @Column(name = "deleted")
     private boolean deleted;

@@ -14,7 +14,7 @@
 <div class="container text-left my-2">
     <h1 th:text="#{msg.edit"></h1>
     <form class="input-form">
-        <input id="input-id" value="${user.id}" type="hidden">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <label for="input-firstname" th:text="#{msg.edit.firstname}"></label>
         <input id="input-firstname" type="text"/>
         <br/>
