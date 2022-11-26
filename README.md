@@ -8,17 +8,20 @@ This site allows you to get information about the courses available, register an
 ## Technologies used:-
 ### Front-End Development:
 - HTML;
+- Thymeleaf;
 - CSS;
-- JavaScript.
+- JavaScript;
+- jQuery.
 
 ### Back-End Development
 - Java [JDK 17];
 - Apache Maven;
+- Spring Framework;
+- Spring Boot;
+- Spring Web/MVC;
+- Spring Data;
+- Spring Security;
 - PostgreSQL;
-- JDBC;
-- XML;
-- Servlet;
-- WebFilter;
-- JSP;
+- Hibernate;
 - Log4J2;
 - Lombok.
