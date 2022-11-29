@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="container text-center my-2">
+    <div class="pagination">
+        <button class="first" th:text="#{msg.orders.paging.first}"></button>
+        <button class="prev" th:text="#{msg.orders.paging.prev}"></button>
+        <button class="current"></button>
+        <button class="next" th:text="#{msg.orders.paging.next}"></button>
+        <button class="last" th:text="#{msg.orders.paging.last}"></button>
+    </div>
+    <table class="table table-bordered border-primary my-2">
+        <tr>
+            <th th:text="#{msg.orders.hashtag}"></th>
+            <th th:text="#{msg.orders.firstname}"></th>
+            <th th:text="#{msg.orders.lastname}"></th>
+            <th th:text="#{msg.orders.email}"></th>
+            <th th:text="#{msg.orders.totalcost}"></th>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

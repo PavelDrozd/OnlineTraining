@@ -1,7 +1,7 @@
 package app.service.impl;
 
 import app.exceptions.service.ServiceException;
-import app.interceptors.LogInvocation;
+import app.log.Logger;
 import app.repository.PersonalInfoRep;
 import app.repository.PosibilitiesRep;
 import app.repository.UserRep;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final DigestUtil digestUtil;
     private final EntityDtoMapper mapper;
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto create(UserDto userDto) {
         userDto.setPassword(digestUtil.hash(userDto.getPassword()));
@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
         return mapper.mapToUserDto(user);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public Page<UserDto> getAll(Pageable pageable) {
         return userRep.findAll(pageable).map(mapper::mapToUserDto);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto get(Long id) {
         return userRep.findById(id)
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ServiceException("User with id " + id + " doesn't exist"));
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto update(UserDto userDto) {
         loginAndEmailValidation(userDto);
@@ -58,23 +58,23 @@ public class UserServiceImpl implements UserService {
         return mapper.mapToUserDto(user);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public void delete(Long id) {
         User user = userRep.findById(id).orElseThrow(() -> new ServiceException("User doesn't exist"));
         user.setDeleted(false);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public Long count() {
         return userRep.count();
     }
 
-    @LogInvocation
+    @Logger
     @Override
-    public UserDto login(String login, String password) {
-        Optional<User> user = userRep.findByLogin(login);
+    public UserDto login(String username, String password) {
+        Optional<User> user = userRep.findByUsername(username);
         String hashedPassword = digestUtil.hash(password);
         if (!user.orElseThrow(() -> new ServiceException("User doesn't exist"))
                 .getPassword().equals(hashedPassword)) {
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     private void loginAndEmailValidation(UserDto userDto) {
         Optional<User> existing = userRep.findById(userDto.getId());
         String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
-                .getLogin();
+                .getUsername();
         checkLogin(userDto, existingLogin);
         String existingEmail = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
                 .getPersonalInfo().getEmail();
@@ -94,10 +94,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkLogin(UserDto userDto, String existingLogin) {
-        if (!existingLogin.equals(userDto.getLogin())) {
-            Optional<User> user = userRep.findByLogin(userDto.getLogin());
+        if (!existingLogin.equals(userDto.getUsername())) {
+            Optional<User> user = userRep.findByUsername(userDto.getUsername());
             if (user.isPresent()) {
-                throw new ServiceException("User with login" + userDto.getLogin() + " already exist");
+                throw new ServiceException("User with login" + userDto.getUsername() + " already exist");
             }
         }
     }
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         if (!existingEmail.equals(userDto.getPersonalInfo().getEmail())) {
             Optional<PersonalInfo> personalInfo = personalInfoRep.findByEmail(userDto.getPersonalInfo().getEmail());
             if (personalInfo.isPresent()) {
-                throw new ServiceException("User with login" + userDto.getLogin() + " already exist");
+                throw new ServiceException("User with login" + userDto.getUsername() + " already exist");
             }
         }
     }

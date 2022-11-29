@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Course</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="container text-center my-2">
+    <table class="table table-bordered border-primary my-2">
+        <tr>
+            <th th:text="#{msg.course.field}"></th>
+            <th th:text="#{msg.course.value}"></th>
+        </tr>
+        <tr>
+            <td th:text="#{msg.course.id}"></td>
+            <td th:text="${course.id}"></td>
+        <tr>
+        <tr>
+            <td th:text="#{msg.course.course}"></td>
+            <td th:text="${course.name}"></td>
+        <tr>
+        <tr>
+            <td th:text="#{msg.course.cost}"></td>
+            <td th:text="${course.cost}"></td>
+        <tr>
+        <tr>
+            <td th:text="#{msg.course.discount}"></td>
+            <td th:text="${course.discount}"></td>
+        <tr>
+        <tr>
+            <td th:text="#{msg.course.duration.days}"></td>
+            <td th:text="${course.durationDays}"></td>
+        <tr>
+    </table>
+</div>
+</body>
+</html>

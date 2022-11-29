@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="container text-center my-2">
+    <table class="table table-bordered border-primary my-2">
+        <tr>
+            <td th:text="#{msg.order.id}"></td>
+            <td th:text="${order.id}"></td>
+        </tr>
+        <tr>
+            <td th:text="#{msg.order.firsname}"></td>
+            <td th:text="${order.user.personalInfo.firstName}"></td>
+        </tr>
+        <tr>
+            <td th:text="#{msg.order.lastname}"></td>
+            <td th:text="${order.user.personalInfo.lastName}"></td>
+        <tr>
+        <tr>
+            <td th:text="#{msg.order.status}"></td>
+            <td th:text="${order.status}"></td>
+        </tr>
+        <tr>
+            <td th:text="#{msg.order.totalcost}"></td>
+            <td th:text="${order.totalCost}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 package app.service.impl;
 
 import app.exceptions.service.ServiceException;
-import app.interceptors.LogInvocation;
+import app.log.Logger;
 import app.repository.CourseRep;
 import app.repository.entity.course.Course;
 import app.service.CourseService;
@@ -20,7 +20,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRep courseRep;
     private final EntityDtoMapper mapper;
 
-    @LogInvocation
+    @Logger
     @Override
     public CourseDto create(CourseDto courseDto) {
         Optional<Course> existing = courseRep.findById(courseDto.getId());
@@ -31,13 +31,13 @@ public class CourseServiceImpl implements CourseService {
         return mapper.mapToCourseDto(course);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public Page<CourseDto> getAll(Pageable pageable) {
         return courseRep.findAll(pageable).map(mapper::mapToCourseDto);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public CourseDto get(Long id) {
         return courseRep.findById(id)
@@ -45,7 +45,7 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new ServiceException("Course with id: " + id + " doesn't exist"));
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public CourseDto update(CourseDto courseDto) {
         Optional<Course> existing = courseRep.findById(courseDto.getId());
@@ -56,14 +56,14 @@ public class CourseServiceImpl implements CourseService {
         return mapper.mapToCourseDto(course);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public void delete(Long id) {
         Course course = courseRep.findById(id).orElseThrow(() -> new ServiceException("Course doesn't exist"));
         course.setDeleted(false);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public Long count() {
         return courseRep.count();

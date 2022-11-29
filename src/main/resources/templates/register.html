@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Register new user</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script defer src="/js/bootstrap-5.2.0.js"></script>
+    <script defer src="/js/jquery-3.6.1.js"></script>
+    <script defer src="/js/user/register.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar::navbar}"></div>
+<div class="container text-left my-2">
+    <h1 th:text="#{msg.register}"></h1>
+    <form class="input-form">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <label for="input-firstname" th:text="#{msg.register.firstname}"></label>
+        <input id="input-firstname" type="text" required/>
+        <br/>
+        <label for="input-lastname" th:text="#{msg.register.lastname}"></label>
+        <input id="input-lastname" type="text" required/>
+        <br/>
+        <label for="input-patronymic" th:text="#{msg.register.patronymic}"></label>
+        <input id="input-patronymic" type="text"/>
+        <br/>
+        <label for="input-email" th:text="#{msg.register.email}"></label>
+        <input id="input-email" type="email" required/>
+        <br/>
+        <label for="input-login" th:text="#{msg.register.username}"></label>
+        <input id="input-login" type="text" required/>
+        <br/>
+        <label for="input-password" th:text="#{msg.register.password}"></label>
+        <input id="input-password" type="password" required/>
+        <br/>
+        <button class="create" th:text="#{msg.register}"></button>
+    </form>
+</div>
+</body>
+</html>
