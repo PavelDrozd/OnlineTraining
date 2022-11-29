@@ -1,7 +1,7 @@
 package app.service.impl;
 
 import app.exceptions.service.ServiceException;
-import app.interceptors.LogInvocation;
+import app.log.Logger;
 import app.repository.PersonalInfoRep;
 import app.repository.PosibilitiesRep;
 import app.repository.UserRep;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final DigestUtil digestUtil;
     private final EntityDtoMapper mapper;
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto create(UserDto userDto) {
         userDto.setPassword(digestUtil.hash(userDto.getPassword()));
@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
         return mapper.mapToUserDto(user);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public Page<UserDto> getAll(Pageable pageable) {
         return userRep.findAll(pageable).map(mapper::mapToUserDto);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto get(Long id) {
         return userRep.findById(id)
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ServiceException("User with id " + id + " doesn't exist"));
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto update(UserDto userDto) {
         loginAndEmailValidation(userDto);
@@ -58,20 +58,20 @@ public class UserServiceImpl implements UserService {
         return mapper.mapToUserDto(user);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public void delete(Long id) {
         User user = userRep.findById(id).orElseThrow(() -> new ServiceException("User doesn't exist"));
         user.setDeleted(false);
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public Long count() {
         return userRep.count();
     }
 
-    @LogInvocation
+    @Logger
     @Override
     public UserDto login(String username, String password) {
         Optional<User> user = userRep.findByUsername(username);
