@@ -19,8 +19,6 @@ public class UserViewController {
 
     private final String USER_PAGE = "user/user";
     private final String USERS_PAGE = "user/users";
-    private final String REGISTER_PAGE = "user/register";
-    private final String PROFILE_PAGE = "user/profile";
     private final String EDIT_PAGE = "user/edit";
 
     private final UserService userService;
@@ -40,17 +38,6 @@ public class UserViewController {
     @GetMapping()
     public String getAll() {
         return USERS_PAGE;
-    }
-
-    @GetMapping("/register")
-    public String create() {
-        return REGISTER_PAGE;
-    }
-
-
-    @GetMapping("/profile")
-    public String profile() {
-        return PROFILE_PAGE;
     }
 
     @GetMapping("/{id}/edit")

@@ -39,14 +39,14 @@ VALUES('SuperAdam', 'SuperAdmin', 'superadmin@gmail.com'),
         ('Us', 'User', 'user@gmail.com');
 
 INSERT INTO users (username, password, personal_info_id, role_id)
-VALUES('superadmin', 'superadmin', (SELECT id FROM personal_infos WHERE email = 'superadmin@gmail.com'), (SELECT id FROM roles WHERE name = 'SUPERADMIN')),
-        ('admin', 'admin', (SELECT id FROM personal_infos WHERE email = 'admin@gmail.com'), (SELECT id FROM roles WHERE name = 'ADMIN')),
-        ('tutor', 'tutor', (SELECT id FROM personal_infos WHERE email = 'tutor@gmail.com'), (SELECT id FROM roles WHERE name = 'TUTOR')),
-        ('student1', 'student1', (SELECT id FROM personal_infos WHERE email = 'student1@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
-        ('student2', 'student2', (SELECT id FROM personal_infos WHERE email = 'student2@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
-        ('student3', 'student3', (SELECT id FROM personal_infos WHERE email = 'student3@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
-        ('student4', 'student4', (SELECT id FROM personal_infos WHERE email = 'student4@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
-        ('user', 'user', (SELECT id FROM personal_infos WHERE email = 'user@gmail.com'), (SELECT id FROM roles WHERE name = 'USER'));
+VALUES('superadmin', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'superadmin@gmail.com'), (SELECT id FROM roles WHERE name = 'SUPERADMIN')),
+        ('admin', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'admin@gmail.com'), (SELECT id FROM roles WHERE name = 'ADMIN')),
+        ('tutor', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'tutor@gmail.com'), (SELECT id FROM roles WHERE name = 'TUTOR')),
+        ('student1', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'student1@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
+        ('student2', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'student2@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
+        ('student3', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'student3@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
+        ('student4', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'student4@gmail.com'), (SELECT id FROM roles WHERE name = 'STUDENT')),
+        ('user', '{bcrypt}$2a$10$lWp7zFA4NSnw9/gimMeIzul09EEoIIRmrbLyCLk/V8uATSR5WNHDe', (SELECT id FROM personal_infos WHERE email = 'user@gmail.com'), (SELECT id FROM roles WHERE name = 'USER'));
 
 INSERT INTO authorities (username, authority)
 VALUES ((SELECT username FROM users WHERE personal_info_id = (SELECT id FROM personal_infos WHERE email = 'superadmin@gmail.com')),  'WATCH_ALL'),

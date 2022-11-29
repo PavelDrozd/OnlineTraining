@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS  personal_infos (
 CREATE TABLE IF NOT EXISTS  users (
     id BIGSERIAL PRIMARY KEY,
     username varchar_ignorecase(50) NOT NULL UNIQUE,
-    password varchar_ignorecase(50) NOT NULL,
+    password varchar_ignorecase(75) NOT NULL,
     personal_info_id bigint NOT NULL REFERENCES personal_infos,
     role_id int4 NOT NULL REFERENCES roles,
     enabled boolean NOT NULL DEFAULT TRUE,

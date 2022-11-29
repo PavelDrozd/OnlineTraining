@@ -1,3 +1,6 @@
+import {prepareCsrfRequestHeaders} from "./security-functions.js";
+import {processError} from "./error-functions.js";
+
 $(function() {
 	const $createBtn = $("button.create");
 	$createBtn.on("click", sendData);
@@ -12,9 +15,10 @@ $(function() {
 		const login = $("#input-login").val();
 		const password = $("#input-password").val();
 		const user = {login, personalInfo, password};
+		const headers = prepareCsrfRequestHeaders();
 		$.ajax({
 			type: "POST",
-			url: "/api/users/register",
+			url: "/api/users/register", headers,
 			data: JSON.stringify(user),
 			success: processCreated,
 			error: processError,
@@ -29,20 +33,10 @@ $(function() {
 			const uri = $XHR.getResponseHeader("Location");
 			window.location.href = uri;
 		} else {
-			alert("Couldn't create book. Server error");
+			alert("Couldn't create user. Server error");
 		}
 	}
 
-	function processError(response) {
-		$(".error").remove();
-		if (response.status === 422) {
-			const validationError = response.responseJSON;
-			for (const field in validationError.messages) {
-				validationError.messages[field].forEach(msg => {
-					$("form").prepend($(`<div class="error">${field}: ${msg}</div>`));
-				})
-			}
-		}
-	}
+
 
 });
