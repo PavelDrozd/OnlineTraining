@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.service.ServiceException;
+import app.exceptions.service.ServiceNotFoundException;
 import app.log.Logger;
 import app.repository.OrderRep;
 import app.repository.entity.order.Order;
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto get(Long id) {
         return orderRep.findById(id)
                 .map(mapper::mapToOrderDto)
-                .orElseThrow(() -> new ServiceException("Order with id: " + id + "doesn't exist"));
+                .orElseThrow(() -> new ServiceNotFoundException("Order with id: " + id + "doesn't exist"));
     }
 
     @Logger

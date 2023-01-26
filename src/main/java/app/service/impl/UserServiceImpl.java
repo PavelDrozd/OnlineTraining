@@ -1,6 +1,7 @@
 package app.service.impl;
 
-import app.exceptions.service.ServiceException;
+import app.exceptions.service.ServiceNotFoundException;
+import app.exceptions.service.ServiceValidationException;
 import app.log.Logger;
 import app.repository.PersonalInfoRep;
 import app.repository.PosibilitiesRep;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
     @Logger
     @Override
     public UserDto create(UserDto userDto) {
+        checkCreateValidation(userDto);
         userDto.setPassword(digestUtil.hash(userDto.getPassword()));
         userDto.setRole(UserDto.Role.USER);
         User user = userRep.save(mapper.mapToUser(userDto));
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public UserDto get(Long id) {
         return userRep.findById(id)
                 .map(mapper::mapToUserDto)
-                .orElseThrow(() -> new ServiceException("User with id " + id + " doesn't exist"));
+                .orElseThrow(() -> new ServiceNotFoundException("User with id " + id + " doesn't exist"));
     }
 
     @Logger
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Logger
     @Override
     public void delete(Long id) {
-        User user = userRep.findById(id).orElseThrow(() -> new ServiceException("User doesn't exist"));
+        User user = userRep.findById(id).orElseThrow(() -> new ServiceNotFoundException("User doesn't exist"));
         user.setDeleted(false);
     }
 
@@ -76,19 +78,25 @@ public class UserServiceImpl implements UserService {
     public UserDto login(String username, String password) {
         Optional<User> user = userRep.findByUsername(username);
         String hashedPassword = digestUtil.hash(password);
-        if (!user.orElseThrow(() -> new ServiceException("User doesn't exist"))
+        if (!user.orElseThrow(() -> new ServiceNotFoundException("User doesn't exist"))
                 .getPassword().equals(hashedPassword)) {
-            throw new ServiceException("Incorrect login or password");
+            throw new ServiceValidationException("Incorrect login or password");
         }
         return mapper.mapToUserDto(user.get());
     }
 
+    private static void checkCreateValidation(UserDto userDto) {
+        if (userDto == null) {
+            throw new ServiceValidationException("User for create is null");
+        }
+    }
+
     private void loginAndEmailValidation(UserDto userDto) {
         Optional<User> existing = userRep.findById(userDto.getId());
-        String existingLogin = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
+        String existingLogin = existing.orElseThrow(() -> new ServiceNotFoundException("User doesn't exist"))
                 .getUsername();
         checkLogin(userDto, existingLogin);
-        String existingEmail = existing.orElseThrow(() -> new ServiceException("User doesn't exist"))
+        String existingEmail = existing.orElseThrow(() -> new ServiceNotFoundException("User doesn't exist"))
                 .getPersonalInfo().getEmail();
         checkEmail(userDto, existingEmail);
     }
@@ -97,7 +105,7 @@ public class UserServiceImpl implements UserService {
         if (!existingLogin.equals(userDto.getUsername())) {
             Optional<User> user = userRep.findByUsername(userDto.getUsername());
             if (user.isPresent()) {
-                throw new ServiceException("User with login" + userDto.getUsername() + " already exist");
+                throw new ServiceValidationException("User with login" + userDto.getUsername() + " already exist");
             }
         }
     }
@@ -106,7 +114,7 @@ public class UserServiceImpl implements UserService {
         if (!existingEmail.equals(userDto.getPersonalInfo().getEmail())) {
             Optional<PersonalInfo> personalInfo = personalInfoRep.findByEmail(userDto.getPersonalInfo().getEmail());
             if (personalInfo.isPresent()) {
-                throw new ServiceException("User with login" + userDto.getUsername() + " already exist");
+                throw new ServiceValidationException("User with login" + userDto.getUsername() + " already exist");
             }
         }
     }

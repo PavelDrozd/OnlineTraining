@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.exceptions.service.ServiceException;
+import app.exceptions.service.ServiceNotFoundException;
 import app.log.Logger;
 import app.repository.CourseRep;
 import app.repository.entity.course.Course;
@@ -25,7 +25,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto create(CourseDto courseDto) {
         Optional<Course> existing = courseRep.findById(courseDto.getId());
         if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
-            throw new ServiceException("Course with name " + courseDto.getName() + " already exists.");
+            throw new ServiceNotFoundException("Course with name " + courseDto.getName() + " already exists.");
         }
         Course course = courseRep.save(mapper.mapToCourse(courseDto));
         return mapper.mapToCourseDto(course);
@@ -42,7 +42,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto get(Long id) {
         return courseRep.findById(id)
                 .map(mapper::mapToCourseDto)
-                .orElseThrow(() -> new ServiceException("Course with id: " + id + " doesn't exist"));
+                .orElseThrow(() -> new ServiceNotFoundException("Course with id: " + id + " doesn't exist"));
     }
 
     @Logger
@@ -50,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto update(CourseDto courseDto) {
         Optional<Course> existing = courseRep.findById(courseDto.getId());
         if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
-            throw new ServiceException("Course with name " + courseDto.getName() + " already exists.");
+            throw new ServiceNotFoundException("Course with name " + courseDto.getName() + " already exists.");
         }
         Course course = courseRep.save(mapper.mapToCourse(courseDto));
         return mapper.mapToCourseDto(course);
@@ -59,7 +59,7 @@ public class CourseServiceImpl implements CourseService {
     @Logger
     @Override
     public void delete(Long id) {
-        Course course = courseRep.findById(id).orElseThrow(() -> new ServiceException("Course doesn't exist"));
+        Course course = courseRep.findById(id).orElseThrow(() -> new ServiceNotFoundException("Course doesn't exist"));
         course.setDeleted(false);
     }
 
