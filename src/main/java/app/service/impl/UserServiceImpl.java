@@ -4,7 +4,6 @@ import app.exceptions.service.ServiceNotFoundException;
 import app.exceptions.service.ServiceValidationException;
 import app.log.Logger;
 import app.repository.PersonalInfoRep;
-import app.repository.PosibilitiesRep;
 import app.repository.UserRep;
 import app.repository.entity.user.PersonalInfo;
 import app.repository.entity.user.User;
@@ -24,7 +23,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRep userRep;
     private final PersonalInfoRep personalInfoRep;
-    private final PosibilitiesRep posibilitiesRep;
     private final DigestUtil digestUtil;
     private final EntityDtoMapper mapper;
 
