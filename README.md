@@ -2,7 +2,7 @@
 
 ### *Author*: Pavel Drozd
 
-This site allows you to get information about the courses available, register and login on the website.
+This site allows you to register, check profile, watch courses, users, orders, and edit users.
 
 
 ## Technologies used:-
@@ -21,7 +21,9 @@ This site allows you to get information about the courses available, register an
 - Spring Web/MVC;
 - Spring Data;
 - Spring Security;
-- PostgreSQL;
+- H2 database;
 - Hibernate;
 - Log4J2;
 - Lombok.
+- JUnit
+- Mockito
