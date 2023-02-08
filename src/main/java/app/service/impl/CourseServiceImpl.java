@@ -1,6 +1,7 @@
 package app.service.impl;
 
 import app.exceptions.service.ServiceNotFoundException;
+import app.exceptions.service.ServiceValidationException;
 import app.log.Logger;
 import app.repository.CourseRep;
 import app.repository.entity.course.Course;
@@ -23,6 +24,7 @@ public class CourseServiceImpl implements CourseService {
     @Logger
     @Override
     public CourseDto create(CourseDto courseDto) {
+        checkNull(courseDto);
         Optional<Course> existing = courseRep.findById(courseDto.getId());
         if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
             throw new ServiceNotFoundException("Course with name " + courseDto.getName() + " already exists.");
@@ -48,9 +50,13 @@ public class CourseServiceImpl implements CourseService {
     @Logger
     @Override
     public CourseDto update(CourseDto courseDto) {
+        checkNull(courseDto);
         Optional<Course> existing = courseRep.findById(courseDto.getId());
-        if (existing.isPresent() && existing.get().getName().equals(courseDto.getName())) {
-            throw new ServiceNotFoundException("Course with name " + courseDto.getName() + " already exists.");
+        if (existing.isEmpty()) {
+            throw new ServiceNotFoundException("Course doesn't exist");
+        }
+        if (existing.get().getName().equals(courseDto.getName())) {
+            throw new ServiceValidationException("Course with name " + courseDto.getName() + " already exists.");
         }
         Course course = courseRep.save(mapper.mapToCourse(courseDto));
         return mapper.mapToCourseDto(course);
@@ -67,6 +73,12 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Long count() {
         return courseRep.count();
+    }
+
+    private void checkNull(CourseDto courseDto) {
+        if (courseDto == null) {
+            throw new ServiceValidationException("Course is null");
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package app.service.impl;
 
 import app.exceptions.service.ServiceNotFoundException;
+import app.exceptions.service.ServiceValidationException;
 import app.log.Logger;
 import app.repository.OrderRep;
 import app.repository.entity.order.Order;
@@ -21,6 +22,7 @@ public class OrderServiceImpl implements OrderService {
     @Logger
     @Override
     public OrderDto create(OrderDto orderDto) {
+        checkNull(orderDto);
         Order order = orderRep.save(mapper.mapToOrder(orderDto));
         return mapper.mapToOrderDto(order);
     }
@@ -42,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
     @Logger
     @Override
     public OrderDto update(OrderDto orderDto) {
+        checkNull(orderDto);
         Order order = orderRep.save(mapper.mapToOrder(orderDto));
         return mapper.mapToOrderDto(order);
     }
@@ -49,13 +52,19 @@ public class OrderServiceImpl implements OrderService {
     @Logger
     @Override
     public void delete(Long id) {
-        orderRep.deleteById(id);
+        throw new UnsupportedOperationException("This operation isn't provided for orders");
     }
 
     @Logger
     @Override
     public Long count() {
         return orderRep.count();
+    }
+
+    private void checkNull(OrderDto orderDto) {
+        if (orderDto == null) {
+            throw new ServiceValidationException("Order is null");
+        }
     }
 
 }
