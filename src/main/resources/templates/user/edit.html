@@ -12,7 +12,7 @@
 <body>
 <div th:replace="~{navbar::navbar}"></div>
 <div class="container text-left my-2">
-    <h1 th:text="#{msg.edit"></h1>
+    <h1 th:text="#{msg.edit}"></h1>
     <form class="input-form">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <label for="input-firstname" th:text="#{msg.edit.firstname}"></label>
